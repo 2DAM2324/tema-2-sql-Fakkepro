@@ -46,26 +46,13 @@ import org.xml.sax.SAXException;
  */
 public class Control {
     
-    private Basededatosserializable xml = new Basededatosserializable();
-
-    public Basededatosserializable getXml() {
-        return xml;
-    }
-
-    public void setXml(Basededatosserializable xml) {
-        this.xml = xml;
-    }
+    private BasededatosSQLite bd = new BasededatosSQLite();
 
     
     
     public void aniadirCliente(String dni, String nombre, String direccion, String ciudad, String numero_telefono){
-    
-        Cliente cliente = new Cliente(dni, nombre, direccion, ciudad, numero_telefono);
-        ArrayList<Cliente> vector_clientes = new ArrayList<>();
-        vector_clientes = xml.deserializacionCliente();
-        
-        vector_clientes.add(cliente);
-        xml.serializacionClientes(vector_clientes);
+
+        bd.ejecutarSentenciasBD("INSERT INTO Cliente (dni, nombre, direccion, ciudad, numero_telefono) VALUES('" + dni + "', '" + nombre + "', '" + direccion + "', '" + ciudad + "', '" + numero_telefono + "');");
     
     }
     
@@ -136,7 +123,7 @@ public class Control {
     return vector_clientes;
     }
     
-    public void aniadirGasolina(int vin, String marca, String modelo, float precio, String color, int deposito){
+    public void aniadirGasolina(String vin, String marca, String modelo, float precio, String color, int deposito){
     
         Gasolina gasolina = new Gasolina(deposito, vin, marca, modelo, precio, color);
         ArrayList<Coche> vector_coches = new ArrayList<>();
@@ -147,7 +134,7 @@ public class Control {
     
     }
     
-    public void aniadirElectrico(int vin, String marca, String modelo, float precio, String color, double bateria){
+    public void aniadirElectrico(String vin, String marca, String modelo, float precio, String color, double bateria){
     
         Electrico electrico = new Electrico(bateria, vin, marca, modelo, precio, color);
         ArrayList<Coche> vector_coches = new ArrayList<>();
@@ -168,7 +155,7 @@ public class Control {
 
     }
     
-    public void modificarCoche(int posicionModificar, double bateria, int deposito, int vin, String marca, String modelo, float precio, String color){
+    public void modificarCoche(int posicionModificar, double bateria, int deposito, String vin, String marca, String modelo, float precio, String color){
         
         ArrayList<Coche> vector_coches = new ArrayList<>();
         vector_coches = xml.deserializacionCoches();
@@ -189,7 +176,7 @@ public class Control {
 
     }
     
-    public boolean comprobarCocheExiste(int vin){
+    public boolean comprobarCocheExiste(String vin){
 
         boolean existe = false;
         ArrayList<Coche> vector_coches = new ArrayList<>();
@@ -197,7 +184,7 @@ public class Control {
         
         for(Coche co : vector_coches){
         
-            if(co.getvin_coche() == vin)
+            if(co.getvin_coche().equalsIgnoreCase(vin))
             {         
                 existe = true;
             }
@@ -215,7 +202,7 @@ public class Control {
     return vector_coches;
     }
     
-    public int posicionCocheBuscado(int vin){
+    public int posicionCocheBuscado(String vin){
     
         ArrayList<Coche> vector_coches = new ArrayList<>();
         vector_coches = xml.deserializacionCoches();
@@ -223,7 +210,7 @@ public class Control {
         
         for(Coche co : vector_coches){
         
-            if(co.getvin_coche() == vin)
+            if(co.getvin_coche().equalsIgnoreCase(vin))
             {         
                 posicion = i;
             }
@@ -349,7 +336,7 @@ public class Control {
     return vector_revisores;
     }
     
-    public void aniadirCompra(String matricula, LocalDateTime fechayhora, String dni, int vin){
+    public void aniadirCompra(String matricula, LocalDateTime fechayhora, String dni, String vin){
     
         Comprar compra = new Comprar(matricula,fechayhora,dni,vin);
         ArrayList<Comprar> vector_compras = new ArrayList<>();
@@ -369,7 +356,7 @@ public class Control {
         xml.serializacionCompras(vector_compras);
     }
     
-    public void modificarCompra(int posicionModificar, String matricula, LocalDateTime fechayhora, String dni, int vin){
+    public void modificarCompra(int posicionModificar, String matricula, LocalDateTime fechayhora, String dni, String vin){
         
         ArrayList<Comprar> vector_compras = new ArrayList<>();
         vector_compras = xml.deserializacionCompras();
@@ -399,7 +386,7 @@ public class Control {
         return existe;
     }
     
-    public boolean comprobarCompraCocheCliente(String matricula, String dni, int vin){
+    public boolean comprobarCompraCocheCliente(String matricula, String dni, String vin){
     
         boolean puedeComprarlo = false;
         ArrayList<Comprar> vector_compras = new ArrayList<>();
@@ -414,13 +401,13 @@ public class Control {
         
         for(Comprar com : vector_compras_ordenado){
         
-            if((com.getvin_comprar() == vin) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true))
+            if((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true))
             {
                 puedeComprarlo = false;
                 return puedeComprarlo;
             }
              
-            if(((com.getvin_comprar() == vin) && (com.getdni_comprar().equalsIgnoreCase(dni) == false) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true)) || ((com.getvin_comprar() != vin) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) != true)))
+            if(((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == false) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true)) || ((com.getvin_comprar() != vin) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) != true)))
             {
                 puedeComprarlo = true;
                 return puedeComprarlo;
@@ -458,7 +445,7 @@ public class Control {
     return vector_compras;
     }
         
-   public void aniadirRevision(String codigo_revision, String codigo_revisor, int vin){
+   public void aniadirRevision(String codigo_revision, String codigo_revisor, String vin){
     
         Revisar revision = new Revisar(codigo_revision, vin, codigo_revisor);
         ArrayList<Revisar> vector_revisiones = new ArrayList<>();
@@ -478,7 +465,7 @@ public class Control {
         xml.serializacionRevisiones(vector_revisiones);
     }
     
-    public void modificarRevision(int posicionModificar, String codigo_revision, String codigo_revisor, int vin){
+    public void modificarRevision(int posicionModificar, String codigo_revision, String codigo_revisor, String vin){
         
         ArrayList<Revisar> vector_revisiones = new ArrayList<>();
         vector_revisiones = xml.deserializacionRevisiones();
@@ -508,7 +495,7 @@ public class Control {
         return existe;
     }
     
-    public boolean comprobarRevisionCocheRevisor(String codigo_revision, String codigo_revisor, int vin){
+    public boolean comprobarRevisionCocheRevisor(String codigo_revision, String codigo_revisor, String vin){
     
         boolean revisado = false;
         ArrayList<Revisar> vector_revisiones = new ArrayList<>();
@@ -516,7 +503,7 @@ public class Control {
         
         for(Revisar revi : vector_revisiones){
         
-            if((revi.getcod_revisor_revisar().equalsIgnoreCase(codigo_revisor) == true) || (revi.getvin_revisar() == vin))
+            if((revi.getcod_revisor_revisar().equalsIgnoreCase(codigo_revisor) == true) || (revi.getvin_revisar().equalsIgnoreCase(vin)))
             {
                 revisado = true;
                 return revisado;
@@ -529,7 +516,7 @@ public class Control {
     
     public Revisar buscarRevision(String codigo){
     
-        Revisar revision = new Revisar("", 0, "");
+        Revisar revision = new Revisar("", "", "");
         ArrayList<Revisar> vector_revisiones = new ArrayList<>();
         vector_revisiones = xml.deserializacionRevisiones();
         int i = 0;
@@ -554,7 +541,7 @@ public class Control {
     return vector_revisiones;
     }
     
-    public void aniadirProvision(String codigo_proveedor, int vin){
+    public void aniadirProvision(String codigo_proveedor, String vin){
     
         Proveer provision = new Proveer(codigo_proveedor, vin);
         ArrayList<Proveer> vector_provisiones = new ArrayList<>();
@@ -574,7 +561,7 @@ public class Control {
         xml.serializacionProvisiones(vector_provisiones);
     }
     
-    public void modificarProvision(int posicionModificar, String codigo_proveedor, int vin){
+    public void modificarProvision(int posicionModificar, String codigo_proveedor, String vin){
         
         ArrayList<Proveer> vector_provisiones = new ArrayList<>();
         vector_provisiones = xml.deserializacionProvsiones();
@@ -586,7 +573,7 @@ public class Control {
 
     }
     
-    public boolean comprobarProvisionExiste(String codigo_proveedor, int vin){
+    public boolean comprobarProvisionExiste(String codigo_proveedor, String vin){
     
         boolean existe_proveedor = false, existe_coche = false, existe = false;
         ArrayList<Proveer> vector_provisiones = new ArrayList<>();
@@ -605,7 +592,7 @@ public class Control {
         
         for(Coche coche : vector_coches){
         
-            if((coche.getvin_coche() == vin))
+            if((coche.getvin_coche().equalsIgnoreCase(vin)))
             {         
                 existe_proveedor = true;
             }
@@ -620,7 +607,7 @@ public class Control {
         return existe;
     }
     
-    public boolean comprobarProvisionCocheProveedor(String codigo_proveedor, int vin){
+    public boolean comprobarProvisionCocheProveedor(String codigo_proveedor, String vin){
     
         boolean proveido = false;
         ArrayList<Proveer> vector_provisiones = new ArrayList<>();
@@ -628,7 +615,7 @@ public class Control {
         
         for(Proveer prove : vector_provisiones){
         
-            if((prove.getcod_proveedor_proveer().equalsIgnoreCase(codigo_proveedor)) && (prove.getvin_proveer() == vin))
+            if((prove.getcod_proveedor_proveer().equalsIgnoreCase(codigo_proveedor)) && (prove.getvin_proveer().equalsIgnoreCase(vin)))
             {
                 proveido = true;
                 return proveido;
@@ -641,7 +628,7 @@ public class Control {
     
     public Proveer buscarProvision(String codigo){
     
-        Proveer provision = new Proveer("", 0);
+        Proveer provision = new Proveer("", "");
         ArrayList<Proveer> vector_provisiones = new ArrayList<>();
         vector_provisiones = xml.deserializacionProvsiones();
         int i = 0;
@@ -666,4 +653,199 @@ public class Control {
     return vector_provisiones;
     }
     
+    public boolean filtrarDni(String dni){
+        
+        if (dni.length() != 9) 
+        {
+            return false;
+        }
+
+        // Extraer el número y la letra del DNI
+        String numeroStr = dni.substring(0, 8);
+        String letra = dni.substring(8, 9);
+
+        // Comprobar que el número es numérico
+        try 
+        {
+            int numero = Integer.parseInt(numeroStr);
+        } 
+        catch (NumberFormatException e)
+        {
+            return false;
+        }
+
+        // Calcular la letra correspondiente al número
+        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int numeroDNI = Integer.parseInt(numeroStr);
+        int indiceLetra = numeroDNI % 23;
+        char letraCalculada = letras.charAt(indiceLetra);
+
+        // Comparar la letra calculada con la letra proporcionada
+        return letra.equalsIgnoreCase(String.valueOf(letraCalculada));
+    }
+    
+    
+    public boolean filtrarNumeroTelefono(String telefono){
+    
+        if(telefono.length() != 9)
+        {
+            return false;
+        }
+        
+        // Comprobar que el número es numérico
+        try 
+        {
+            int numero = Integer.parseInt(telefono);
+        }
+        catch (NumberFormatException e) 
+        {
+            return false;
+        }
+        
+    return true;
+    }
+    
+    public boolean filtrarVin(String vin){
+    
+        if(vin.length() != 4)
+        {
+            return false;
+        }
+        
+        // Comprobar que el número es numérico
+        try 
+        {
+            int numero = Integer.parseInt(vin);
+        }
+        catch (NumberFormatException e) 
+        {
+            return false;
+        }
+        
+    return true;
+    }
+    
+    public boolean filtrarCodigoProveedor(String codigo){
+    
+        if(codigo.length() != 5)
+        {
+            return false;
+        }
+        
+        // Comprobar que el número es numérico
+        try 
+        {
+            int numero = Integer.parseInt(codigo);
+        }
+        catch (NumberFormatException e) 
+        {
+            return false;
+        }
+        
+    return true;
+    }
+    
+    public boolean filtrarCodigoRevisor(String codigo){
+    
+        if (codigo.length() != 4)
+        {
+            return false;
+        }
+
+        // Verificar los primeros 3 caracteres (deben ser dígitos)
+        for (int i = 0; i < 3; i++)
+        {
+            char c = codigo.charAt(i);
+            
+            if (!Character.isDigit(c)) 
+            {
+                return false;
+            }
+        }
+
+        // Verificar el último carácter (debe ser una letra)
+        char lastChar = codigo.charAt(codigo.length() - 1);
+        
+    return Character.isLetter(lastChar);
+    }
+    
+    public boolean filtrarCodigoProvision(String codigo){
+    
+        if (codigo.length() != 5)
+        {
+            return false;
+        }
+
+        // Verificar los primeros 4 caracteres (deben ser dígitos)
+        for (int i = 0; i < 4; i++)
+        {
+            char c = codigo.charAt(i);
+            
+            if (!Character.isDigit(c)) 
+            {
+                return false;
+            }
+        }
+
+        // Verificar el último carácter (debe ser una letra)
+        char lastChar = codigo.charAt(codigo.length() - 1);
+        
+    return Character.isLetter(lastChar);
+    }
+    
+    public boolean filtrarCodigoRevision(String codigo){
+    
+        if (codigo.length() != 5)
+        {
+            return false;
+        }
+
+        // Verificar los primeros 4 caracteres (deben ser dígitos)
+        for (int i = 0; i < 4; i++)
+        {
+            char c = codigo.charAt(i);
+            
+            if (!Character.isDigit(c)) 
+            {
+                return false;
+            }
+        }
+
+        // Verificar el último carácter (debe ser una letra)
+        char lastChar = codigo.charAt(codigo.length() - 1);
+        
+    return Character.isLetter(lastChar);
+    }
+    
+    public boolean filtrarMatricula(String matricula){
+    
+        if (matricula.length() != 7) 
+        {
+            return false;
+        }
+
+        // Comprueba los primeros 4 caracteres (deben ser dígitos)
+        for (int i = 0; i < 4; i++) 
+        {
+            char c = matricula.charAt(i);
+            
+            if (!Character.isDigit(c)) 
+            {
+                return false;
+            }
+        }
+
+        // Comprueba los últimos 3 caracteres (deben ser letras mayúsculas)
+        for (int i = 4; i < 7; i++)
+        {
+            char c = matricula.charAt(i);
+            
+            if (!Character.isLetter(c) || !Character.isUpperCase(c)) 
+            {
+                return false;
+            }
+        }
+        
+    return true;
+    }
 }

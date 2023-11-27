@@ -13,10 +13,10 @@ import java.io.Serializable;
 public class Revisar implements Serializable{
 
     private String cod_revision_revisar;
-    private int vin_revisar;
+    private String vin_revisar;
     private String cod_revisor_revisar;
     
-    public Revisar(String codigo_revision, int vin, String codigo_revisor){
+    public Revisar(String codigo_revision, String vin, String codigo_revisor){
     
         setcod_revision_revisar(codigo_revision);
         setvin_revisar(vin);
@@ -48,13 +48,13 @@ public class Revisar implements Serializable{
 
     }
 
-    public void setvin_revisar(int vin){
+    public void setvin_revisar(String vin){
 
         this.vin_revisar = vin;
 
     }
 
-    public int getvin_revisar(){
+    public String getvin_revisar(){
 
         return this.vin_revisar;
 

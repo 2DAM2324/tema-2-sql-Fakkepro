@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -36,8 +37,6 @@ public class BasededatosSQLite {
     
     public BasededatosSQLite(){
         
-        setConnection(null);
-        
         try
         {
             Class.forName("org.sqlite.JDBC");
@@ -47,6 +46,8 @@ public class BasededatosSQLite {
             e.printStackTrace();
             return;
         }
+        
+        abrirBasedeDatos();
         
     }
     
@@ -123,13 +124,21 @@ public class BasededatosSQLite {
             ResultSet resultSet = null;
             ArrayList<Cliente> listaCliente = new ArrayList<>();
             
-            resultSet = ejecutarConsultaBD("SELECT * FROM Alumnos");
+            resultSet = ejecutarConsultaBD("SELECT * FROM Cliente");
             
             try
             {
                 while (resultSet.next())
                 {
-                    System.out.println("Nombre: " + resultSet.getString("nombre"));
+                    String dni = resultSet.getString("dni");
+                    String nombre = resultSet.getString("nombre");
+                    String direccion = resultSet.getString("direccion");
+                    String ciudad = resultSet.getString("ciudad");
+                    String numeroTelefono = resultSet.getString("numero_telefono");
+                    
+                    Cliente cliente = new Cliente(dni, nombre, direccion, ciudad, numeroTelefono);
+                    
+                    listaCliente.add(cliente);
                 }
             }
             catch (SQLException e)
@@ -157,57 +166,323 @@ public class BasededatosSQLite {
         return listaCliente;
         }
         
-        public void insertarClientes(ArrayList<Cliente> clientes) {
+        public ArrayList<Coche> getGasolina(){
         
-        try 
-        {
-            // Utilizamos una transacción para asegurar la consistencia de la base de datos
-            getConnection().setAutoCommit(false);
-
-            // Preparamos la sentencia de inserción
-            String sql = "INSERT INTO Cliente(dni, nombre, direccion, ciudad, numero_telefono) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+            ResultSet resultSet = null;
+            ArrayList<Coche> listaCoche = new ArrayList<>();
             
-            preparedStatement.setString(1, clientes.get(clientes.size()).getdni_cliente());
-            preparedStatement.setString(2, clientes.get(clientes.size()).getnombre_cliente());
-            preparedStatement.setString(3, clientes.get(clientes.size()).getdireccion_cliente());
-            preparedStatement.setString(4, clientes.get(clientes.size()).getciudad_cliente());
-            preparedStatement.setString(5, clientes.get(clientes.size()).getnumero_telefono_cliente());
-
-            // Ejecutamos la inserción
-            preparedStatement.executeUpdate();
-
-            // Confirmamos la transacción
-            getConnection().commit();
-
-        }
-        catch (SQLException e) 
-        {
-            // En caso de error, deshacemos la transacción
-            try 
-            {
-                getConnection().rollback();
-                e.printStackTrace();
-            } 
-            catch (SQLException e1) 
-            {
-                e1.printStackTrace();
-            }
-        }
-        finally
-        {
-            // Restauramos el modo de auto-commit
+            resultSet = ejecutarConsultaBD("SELECT * FROM Gasolina");
+            
             try
             {
-                getConnection().setAutoCommit(true);
+                while (resultSet.next())
+                {
+                    String vin = resultSet.getString("vin");
+                    String marca = resultSet.getString("marca");
+                    String modelo = resultSet.getString("modelo");
+                    float precio = resultSet.getFloat("precio");
+                    String color = resultSet.getString("color");
+                    int deposito = resultSet.getInt("deposito");
+                    
+                    Gasolina coche = new Gasolina(deposito, vin, marca, modelo, precio, color);
+                    
+                    listaCoche.add(coche);
+                }
             }
-            catch (SQLException e) 
+            catch (SQLException e)
             {
-                e.printStackTrace();
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
             }
-
-            cerrarBasedeDatos();
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaCoche;
         }
-    }
-    
+        
+        public ArrayList<Coche> getElectrico(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Coche> listaCoche = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Electrico");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String vin = resultSet.getString("vin");
+                    String marca = resultSet.getString("marca");
+                    String modelo = resultSet.getString("modelo");
+                    float precio = resultSet.getFloat("precio");
+                    String color = resultSet.getString("color");
+                    double bateria = resultSet.getDouble("bateria");
+                    
+                    Electrico coche = new Electrico(bateria, vin, marca, modelo, precio, color);
+                    
+                    listaCoche.add(coche);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaCoche;
+        }
+        
+        public ArrayList<Revisores> getRevisor(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Revisores> listaRevisor = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Revisor");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String codigo = resultSet.getString("codigo");
+                    String nombre = resultSet.getString("nombre");
+                    
+                    Revisores revisor = new Revisores(codigo, nombre);
+                    
+                    listaRevisor.add(revisor);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaRevisor;
+        }
+        
+        public ArrayList<Proveedor> getProveedor(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Proveedor> listaProveedor = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Proveedor");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String codigo = resultSet.getString("codigo");
+                    String nombre = resultSet.getString("nombre");
+                    
+                    Proveedor proveedor = new Proveedor(codigo, nombre);
+                    
+                    listaProveedor.add(proveedor);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaProveedor;
+        }
+        
+        public ArrayList<Comprar> getCompra(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Comprar> listaCompra = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Comprar");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String matricula = resultSet.getString("matricula");
+                    LocalDateTime fecha = LocalDateTime.parse(resultSet.getString("fecha"));
+                    String vin = resultSet.getString("vin_coche");
+                    String dni = resultSet.getString("dni_cliente");
+                    
+                    Comprar compra = new Comprar(matricula, fecha, dni, vin);
+                    
+                    listaCompra.add(compra);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaCompra;
+        }
+        
+        public ArrayList<Proveer> getProvisiones(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Proveer> listaProvisiones = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Proveer");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String codigo = resultSet.getString("codigo_proveedor");
+                    String vin = resultSet.getString("vin_coche");
+                    
+                    Proveer provision = new Proveer(codigo, vin);
+                    
+                    listaProvisiones.add(provision);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaProvisiones;
+        }
+        
+        public ArrayList<Revisar> getRevisiones(){
+        
+            ResultSet resultSet = null;
+            ArrayList<Revisar> listaRevisiones = new ArrayList<>();
+            
+            resultSet = ejecutarConsultaBD("SELECT * FROM Proveer");
+            
+            try
+            {
+                while (resultSet.next())
+                {
+                    String codigo = resultSet.getString("codigo");
+                    String codigoRevisor = resultSet.getString("codigo_revisor");
+                    String vin = resultSet.getString("vin_coche");
+                    
+                    Revisar revision = new Revisar(codigo, vin, codigoRevisor);
+                    
+                    listaRevisiones.add(revision);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            }
+            finally
+            {
+                // Cierra el ResultSet al finalizar
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException e)
+                {
+                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                }
+                
+                cerrarBasedeDatos();
+            }
+        
+        return listaRevisiones;
+        }
+        
 }

@@ -14,7 +14,7 @@ public class Electrico extends Coche implements Serializable{
 
     private double bateria_electrico;
     
-    public Electrico(double bateria, int vin, String marca, String modelo, float precio, String color){
+    public Electrico(double bateria, String vin, String marca, String modelo, float precio, String color){
     
         super(vin, marca, modelo, precio, color);
         setbateria_electrico(bateria);

@@ -14,7 +14,7 @@ public class Gasolina extends Coche implements Serializable{
 
     private int deposito_gasolina;
 
-    public Gasolina(int deposito_gasolina, int vin, String marca, String modelo, float precio, String color) {
+    public Gasolina(int deposito_gasolina, String vin, String marca, String modelo, float precio, String color) {
         super(vin, marca, modelo, precio, color);
         this.deposito_gasolina = deposito_gasolina;
     }

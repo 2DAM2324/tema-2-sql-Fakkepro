@@ -12,13 +12,13 @@ import java.io.Serializable;
  */
 public class Coche implements Serializable{
 
-    protected int vin_coche;
+    protected String vin_coche;
     protected String marca_coche;
     protected String modelo_coche;
     protected float precio_coche;
     protected String color_coche;
     
-    public Coche(int vin, String marca, String modelo, float precio, String color){
+    public Coche(String vin, String marca, String modelo, float precio, String color){
     
         setvin_coche(vin);
         setmarca_coche(marca);
@@ -28,13 +28,13 @@ public class Coche implements Serializable{
     
     }
 
-    public void setvin_coche(int vin){
+    public void setvin_coche(String vin){
 
         this.vin_coche = vin;
 
     }
 
-    public int getvin_coche(){
+    public String getvin_coche(){
 
         return this.vin_coche;
 

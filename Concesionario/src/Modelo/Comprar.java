@@ -18,9 +18,9 @@ public class Comprar implements Serializable{
     private String matricula_comprar;
     private LocalDateTime FechayHora;
     private String dni_comprar;
-    private int vin_comprar;
+    private String vin_comprar;
     
-    public Comprar(String matricula, LocalDateTime fechayhora, String dni, int vin){
+    public Comprar(String matricula, LocalDateTime fechayhora, String dni, String vin){
     
         setmatricula_comprar(matricula);
         setFechayHora(fechayhora);
@@ -70,13 +70,13 @@ public class Comprar implements Serializable{
         
     }
     
-    public void setvin_comprar(int vin){
+    public void setvin_comprar(String vin){
     
         this.vin_comprar = vin;
     
     }
     
-    public int getvin_comprar(){
+    public String getvin_comprar(){
     
         return this.vin_comprar;
         
