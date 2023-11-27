@@ -50,6 +50,7 @@ public class BasededatosSQLite {
         
     }
     
+        //Métedo para abrir la conexión con la base de datos.
         public void abrirBasedeDatos(){
         
             try
@@ -64,6 +65,7 @@ public class BasededatosSQLite {
         
         }
         
+        //Metodo para cerrar la conexión con la base de datos.
         public void cerrarBasedeDatos(){
         
              try
@@ -80,10 +82,13 @@ public class BasededatosSQLite {
 
         }
         
+        //Método que ejecuta una sentencia en la base de datos.
         public void ejecutarSentenciasBD(String sentencia){
         
             try
             {
+                // Utilizamos una transacción para asegurar la consistencia de la base de datos
+                getConnection().setAutoCommit(false);
                 PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
             }
             catch(SQLException e)
@@ -93,6 +98,7 @@ public class BasededatosSQLite {
             
         }
         
+        //Método que ejecuta una consulta en la base de datos y te devuelve el resultado.
         public ResultSet ejecutarConsultaBD(String consulta){
         
             ResultSet resultSet = null;
@@ -101,8 +107,6 @@ public class BasededatosSQLite {
                 // Se utiliza PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
                 PreparedStatement statement = getConnection().prepareStatement(consulta);
                 resultSet = statement.executeQuery();
-
-                // Puedes procesar los resultados en el lugar donde llames a este método
             }
             catch (SQLException e)
             {
@@ -113,6 +117,7 @@ public class BasededatosSQLite {
         
         }
         
+        //Me devuelve todos los clientes de la base de datos.
         public ArrayList<Cliente> getClientes(){
         
             ResultSet resultSet = null;
@@ -151,5 +156,58 @@ public class BasededatosSQLite {
         
         return listaCliente;
         }
+        
+        public void insertarClientes(ArrayList<Cliente> clientes) {
+        
+        try 
+        {
+            // Utilizamos una transacción para asegurar la consistencia de la base de datos
+            getConnection().setAutoCommit(false);
+
+            // Preparamos la sentencia de inserción
+            String sql = "INSERT INTO Cliente(dni, nombre, direccion, ciudad, numero_telefono) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+            
+            preparedStatement.setString(1, clientes.get(clientes.size()).getdni_cliente());
+            preparedStatement.setString(2, clientes.get(clientes.size()).getnombre_cliente());
+            preparedStatement.setString(3, clientes.get(clientes.size()).getdireccion_cliente());
+            preparedStatement.setString(4, clientes.get(clientes.size()).getciudad_cliente());
+            preparedStatement.setString(5, clientes.get(clientes.size()).getnumero_telefono_cliente());
+
+            // Ejecutamos la inserción
+            preparedStatement.executeUpdate();
+
+            // Confirmamos la transacción
+            getConnection().commit();
+
+        }
+        catch (SQLException e) 
+        {
+            // En caso de error, deshacemos la transacción
+            try 
+            {
+                getConnection().rollback();
+                e.printStackTrace();
+            } 
+            catch (SQLException e1) 
+            {
+                e1.printStackTrace();
+            }
+        }
+        finally
+        {
+            // Restauramos el modo de auto-commit
+            try
+            {
+                getConnection().setAutoCommit(true);
+            }
+            catch (SQLException e) 
+            {
+                e.printStackTrace();
+            }
+
+            cerrarBasedeDatos();
+        }
+    }
     
 }
