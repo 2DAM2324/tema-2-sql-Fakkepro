@@ -12,15 +12,27 @@ import java.io.Serializable;
  */
 public class Proveer implements Serializable{
 
+    private String codigo_proveer;
     private String cod_proveedor_proveer;
     private String vin_proveer;
     
-    public Proveer(String codigo, String vin){
+    public Proveer(String codigo, String codigoProveedor, String vin){
     
-        setcod_proveedor_proveer(codigo);
+        setCodigo_proveer(codigo);
+        setcod_proveedor_proveer(codigoProveedor);
         setvin_proveer(vin);
     
     }
+
+    public String getCodigo_proveer() {
+        return codigo_proveer;
+    }
+
+    public void setCodigo_proveer(String codigo_proveer) {
+        this.codigo_proveer = codigo_proveer;
+    }
+    
+    
 
     public void setcod_proveedor_proveer(String codigo){
     

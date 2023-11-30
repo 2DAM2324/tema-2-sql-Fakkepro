@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,7 +58,6 @@ public class BasededatosSQLite {
             try
             {
                 setConnection(DriverManager.getConnection(getDB_URL()));
-                System.out.println("Conexión exitosa");
             }
             catch (SQLException e)
             {
@@ -111,7 +111,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al ejecutar la consulta: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta: " + e.getMessage());
             }
             
             return resultSet;
@@ -143,7 +143,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al traer los clientes de la base de datos: " + e.getMessage());
             }
             finally
             {
@@ -157,13 +157,143 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResulSet:  " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaCliente;
+        }
+        
+        public void aniadirCLienteBD(Cliente cliente){
+        
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Cliente (dni, nombre, direccion, ciudad, numero_telefono) " +
+                        "VALUES (?, ?, ?, ?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, cliente.getdni_cliente());
+                preparedStatement.setString(2, cliente.getnombre_cliente());
+                preparedStatement.setString(3, cliente.getdireccion_cliente());
+                preparedStatement.setString(4, cliente.getciudad_cliente());
+                preparedStatement.setString(5, cliente.getnumero_telefono_cliente());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Cliente añadido correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+            finally
+            {
+                // Restaurar el modo de auto-commit al finalizar la transacción
+                try 
+                {
+                    connection.setAutoCommit(true);
+                }
+                catch (SQLException e) 
+                {
+                    e.printStackTrace();
+                }
+            }
+        
+        }
+        
+        public void borrarClienteBD(String dni) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Cliente WHERE dni = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, dni);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Cliente borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void modificarClienteBD(Cliente cliente) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE Cliente SET nombre = ?, direccion = ?, ciudad = ?, numero_telefono = ? " +
+                        "WHERE dni = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, cliente.getnombre_cliente());
+                preparedStatement.setString(2, cliente.getdireccion_cliente());
+                preparedStatement.setString(3, cliente.getciudad_cliente());
+                preparedStatement.setString(4, cliente.getnumero_telefono_cliente());
+                preparedStatement.setString(5, cliente.getdni_cliente());
+
+                // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Cliente modificado correctamente.");
+            }
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Coche> getGasolina(){
@@ -191,7 +321,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error traer los datos de los gasolina: " + e.getMessage());
             }
             finally
             {
@@ -205,13 +335,60 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaCoche;
+        }
+        
+        public void aniadirGasolinaBD(Gasolina gasolina) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Gasolina (vin, marca, modelo, precio, color, deposito) VALUES (?, ?, ?, ?, ?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, gasolina.getvin_coche());
+                preparedStatement.setString(2, gasolina.getmarca_coche());
+                preparedStatement.setString(3, gasolina.getmodelo_coche());
+                preparedStatement.setFloat(4, gasolina.getprecio_coche());
+                preparedStatement.setString(5, gasolina.getcolor_coche());
+                preparedStatement.setInt(6, gasolina.getdeposito_gasolina());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Coche añadido correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+
+        public void borrarGasolinaBD(String vin) {
+            borrarCocheBD("Gasolina", vin);
+        }
+
+        public void modificarGasolinaBD(Gasolina gasolina) {
+            modificarCocheBD("Gasolina", gasolina);
         }
         
         public ArrayList<Coche> getElectrico(){
@@ -238,8 +415,8 @@ public class BasededatosSQLite {
                 }
             }
             catch (SQLException e)
-            {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+            {                    
+                JOptionPane.showMessageDialog(null, "Error al cargar los electricos: " + e.getMessage());
             }
             finally
             {
@@ -253,13 +430,134 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaCoche;
+        }
+        
+        public void aniadirElectricoBD(Electrico electrico) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Electrico (vin, marca, modelo, precio, color, bateria) VALUES (?, ?, ?, ?, ?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, electrico.getvin_coche());
+                preparedStatement.setString(2, electrico.getmarca_coche());
+                preparedStatement.setString(3, electrico.getmodelo_coche());
+                preparedStatement.setFloat(4, electrico.getprecio_coche());
+                preparedStatement.setString(5, electrico.getcolor_coche());
+                preparedStatement.setDouble(6, electrico.getbateria_electrico());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Coche añadido correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+
+        public void borrarElectricoBD(String vin) {
+            borrarCocheBD("Electrico", vin);
+        }
+
+        public void modificarElectricoBD(Electrico electrico) {
+            modificarCocheBD("Electrico", electrico);
+        }
+        
+        private void borrarCocheBD(String tipoCoche, String vin) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM " + tipoCoche + " WHERE vin = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, vin);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Coche borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        private void modificarCocheBD(String tipoCoche, Coche coche) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE " + tipoCoche + " SET marca = ?, modelo = ?, precio = ?, color = ? WHERE vin = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, coche.getmarca_coche());
+                preparedStatement.setString(2, coche.getmodelo_coche());
+                preparedStatement.setFloat(3, coche.getprecio_coche());
+                preparedStatement.setString(4, coche.getcolor_coche());
+                preparedStatement.setString(5, coche.getvin_coche());
+                 // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Coche modificado correctamente.");
+            } 
+            catch (SQLException e) {
+                // Deshacer la transacción en caso de error
+                try
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Revisores> getRevisor(){
@@ -283,7 +581,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al cargar los revisores: " + e.getMessage());
             }
             finally
             {
@@ -297,13 +595,121 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaRevisor;
+        }
+        
+        public void aniadirRevisorBD(Revisores revisor) {
+            try
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Revisor (codigo, nombre) VALUES (?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, revisor.getcod_revisor_revisores());
+                preparedStatement.setString(2, revisor.getNombre_revisores());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Revisor añadido correctamente.");
+            }
+            catch (SQLException e)
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void borrarRevisorBD(String codigo) {
+            try
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Revisor WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, codigo);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Revisor borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void modificarRevisorBD(Revisores revisor) {
+            try
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE Revisor SET nombre = ? WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, revisor.getNombre_revisores());
+                preparedStatement.setString(2, revisor.getcod_revisor_revisores());
+
+                // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Revisor modificado correctamente.");
+            }
+            catch (SQLException e)
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Proveedor> getProveedor(){
@@ -327,7 +733,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al cargar los proveedores: " + e.getMessage());
             }
             finally
             {
@@ -341,13 +747,122 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaProveedor;
+        }
+        
+        public void aniadirProveedorBD(Proveedor proveedor) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Proveedor (codigo, nombre) VALUES (?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, proveedor.getcod_proveedor());
+                preparedStatement.setString(2, proveedor.getnombre_provedor());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Proveedor añadido correctamente.");
+
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void borrarProveedorBD(String codigo) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Proveedor WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, codigo);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Proveedor borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void modificarProveedorBD(Proveedor proveedor) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE Proveedor SET nombre = ? WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, proveedor.getnombre_provedor());
+                preparedStatement.setString(2, proveedor.getcod_proveedor());
+
+                // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Comprar> getCompra(){
@@ -373,7 +888,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al traer las compras de la base de datos");
             }
             finally
             {
@@ -387,13 +902,126 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaCompra;
+        }
+        
+        public void aniadirComprarBD(Comprar compra) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Comprar(matricula, fecha, vin_coche, dni_cliente) VALUES (?, ?, ?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, compra.getmatricula_comprar());
+                preparedStatement.setString(2, compra.getFechayHora().toString());
+                preparedStatement.setString(3, compra.getvin_comprar());
+                preparedStatement.setString(4, compra.getdni_comprar());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Compra añadida correctamente.");
+            }
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
+        }
+
+        public void borrarComprarBD(String matricula) 
+        {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Comprar WHERE matricula = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, matricula);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Compra borrada correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
+        }
+
+        public void modificarComprarBD(Comprar compra) 
+        {
+            try
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE Comprar SET fecha = ?, vin_coche = ?, dni_cliente = ? WHERE matricula = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, compra.getFechayHora().toString());
+                preparedStatement.setString(2, compra.getvin_comprar());
+                preparedStatement.setString(3, compra.getdni_comprar());
+                preparedStatement.setString(4, compra.getmatricula_comprar());
+
+                // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Compra modificada correctamente.");
+            }
+            catch (SQLException e) {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Proveer> getProvisiones(){
@@ -407,17 +1035,18 @@ public class BasededatosSQLite {
             {
                 while (resultSet.next())
                 {
-                    String codigo = resultSet.getString("codigo_proveedor");
+                    String codigo = resultSet.getString("codigo");
+                    String codigoProveedor = resultSet.getString("codigo_proveedor");
                     String vin = resultSet.getString("vin_coche");
                     
-                    Proveer provision = new Proveer(codigo, vin);
+                    Proveer provision = new Proveer(codigo, codigoProveedor, vin);
                     
                     listaProvisiones.add(provision);
                 }
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al cargar las provisiones : " + e.getMessage());
             }
             finally
             {
@@ -431,13 +1060,123 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaProvisiones;
+        }
+        
+        public void aniadirProveerBD(Proveer proveer) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Proveer(codigo, codigo_proveedor, vin_coche) VALUES (?, ?, ?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, proveer.getCodigo_proveer());
+                preparedStatement.setString(2, proveer.getcod_proveedor_proveer());
+                preparedStatement.setString(3, proveer.getvin_proveer());
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Registro de proveedor añadido correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
+        }
+
+        public void borrarProveerBD(String codigo) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Proveer WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, codigo);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Registro de proveedor borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
+        }
+
+        public void modificarProveerBD(Proveer proveer) {
+            try
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la actualización
+                String sentencia = "UPDATE Proveer SET vin_coche = ?, codigo_proveedor = ? WHERE codigo = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, proveer.getvin_proveer());
+                preparedStatement.setString(2, proveer.getcod_proveedor_proveer());
+                preparedStatement.setString(3, proveer.getCodigo_proveer());
+
+                // Ejecutar la actualización
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Registro de proveedor modificado correctamente.");
+            } 
+            catch (SQLException e)
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                } 
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
+            }
         }
         
         public ArrayList<Revisar> getRevisiones(){
@@ -445,7 +1184,7 @@ public class BasededatosSQLite {
             ResultSet resultSet = null;
             ArrayList<Revisar> listaRevisiones = new ArrayList<>();
             
-            resultSet = ejecutarConsultaBD("SELECT * FROM Proveer");
+            resultSet = ejecutarConsultaBD("SELECT * FROM Revisar");
             
             try
             {
@@ -462,7 +1201,7 @@ public class BasededatosSQLite {
             }
             catch (SQLException e)
             {
-                System.err.println("Error al procesar los resultados: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al cargar las revisiones : " + e.getMessage());
             }
             finally
             {
@@ -476,13 +1215,105 @@ public class BasededatosSQLite {
                 }
                 catch (SQLException e)
                 {
-                    System.err.println("Error al cerrar el ResultSet: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el ResultSet: " + e.getMessage());
                 }
-                
-                cerrarBasedeDatos();
             }
         
         return listaRevisiones;
         }
+        
+        public void aniadirRevisarBD(Revisar revisar) {
+        try {
+            getConnection().setAutoCommit(false);
+            // Preparar la sentencia SQL para la inserción
+            String sentencia = "INSERT INTO Revisar(codigo, vin_coche, codigo_revisor) VALUES (?, ?, ?)";
+
+            // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+            // Establecer los valores de los parámetros
+            preparedStatement.setString(1, revisar.getcod_revision_revisar());
+            preparedStatement.setString(2, revisar.getvin_revisar());
+            preparedStatement.setString(3, revisar.getcod_revisor_revisar());
+
+            // Ejecutar la inserción
+            preparedStatement.executeUpdate();
+
+            // Confirmar la transacción
+            getConnection().commit();
+            JOptionPane.showMessageDialog(null, "Revisión añadida correctamente.");
+        } catch (SQLException e) {
+            // Deshacer la transacción en caso de error
+            try {
+                getConnection().rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        }
+    }
+
+    public void borrarRevisarBD(String codigoRevision) {
+        try {
+            getConnection().setAutoCommit(false);
+            // Preparar la sentencia SQL para la eliminación
+            String sentencia = "DELETE FROM Revisar WHERE codigo = ?";
+
+            // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+            // Establecer el valor del parámetro
+            preparedStatement.setString(1, codigoRevision);
+
+            // Ejecutar la eliminación
+            preparedStatement.executeUpdate();
+
+            // Confirmar la transacción
+            getConnection().commit();
+            JOptionPane.showMessageDialog(null, "Revisión borrada correctamente.");
+        } catch (SQLException e) {
+            // Deshacer la transacción en caso de error
+            try {
+                getConnection().rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        }
+    }
+
+    public void modificarRevisarBD(Revisar revisar) {
+        try {
+            getConnection().setAutoCommit(false);
+            // Preparar la sentencia SQL para la actualización
+            String sentencia = "UPDATE Revisar SET vin_coche = ?, codigo_revisor = ? WHERE codigo = ?";
+
+            // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+            // Establecer los valores de los parámetros
+            preparedStatement.setString(1, revisar.getvin_revisar());
+            preparedStatement.setString(2, revisar.getcod_revisor_revisar());
+            preparedStatement.setString(3, revisar.getcod_revision_revisar());
+
+            // Ejecutar la actualización
+            preparedStatement.executeUpdate();
+
+            // Confirmar la transacción
+            getConnection().commit();
+            JOptionPane.showMessageDialog(null, "Revisión modificada correctamente.");
+        } catch (SQLException e) {
+            // Deshacer la transacción en caso de error
+            try {
+                getConnection().rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        }
+    }
         
 }

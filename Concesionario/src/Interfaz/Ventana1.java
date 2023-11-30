@@ -88,6 +88,8 @@ public class Ventana1 extends javax.swing.JFrame {
         ModeloTablaClientes.addColumn("DNI");
         ModeloTablaClientes.addColumn("Nombre");
         ModeloTablaClientes.addColumn("Teléfono");
+        ModeloTablaClientes.addColumn("Dirección");
+        ModeloTablaClientes.addColumn("Ciudad");
         this.Tabla_Clientes.setModel(ModeloTablaClientes);
         
         ModeloTablaCoches = new DefaultTableModel();
@@ -124,6 +126,7 @@ public class Ventana1 extends javax.swing.JFrame {
         this.Tabla_Reviones.setModel(ModeloTablaRevisiones);
         
         ModeloTablaProvisiones = new DefaultTableModel();
+        ModeloTablaProvisiones.addColumn("Codigo");
         ModeloTablaProvisiones.addColumn("Codigo_proveedor");
         ModeloTablaProvisiones.addColumn("VIN");
         this.Tabla_Provisiones.setModel(ModeloTablaProvisiones);
@@ -193,7 +196,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         for(int i = 0; i < vector_clientes.size(); i++)
         {
-            this.ModeloTablaClientes.addRow(new Object[] {vector_clientes.get(i).getdni_cliente(), vector_clientes.get(i).getnombre_cliente(), vector_clientes.get(i).getnumero_telefono_cliente()});  
+            this.ModeloTablaClientes.addRow(new Object[] {vector_clientes.get(i).getdni_cliente(), vector_clientes.get(i).getnombre_cliente(), vector_clientes.get(i).getnumero_telefono_cliente(), vector_clientes.get(i).getdireccion_cliente(), vector_clientes.get(i).getciudad_cliente()});  
         }
         this.ModeloTablaClientes.fireTableDataChanged();
     
@@ -201,7 +204,34 @@ public class Ventana1 extends javax.swing.JFrame {
     
     public void cargarCoches(){
     
-        ArrayList<Coche> vector_coches = controlador.getCoches();
+        cargarCochesGasolina();
+        cargarCochesElectricos();
+    
+    }
+    
+    public void cargarCochesElectricos(){
+    
+        ArrayList<Coche> vector_coches = controlador.getCochesElectrico();
+        
+        for(int i = 0; i < vector_coches.size(); i++)
+        {
+            if(vector_coches.get(i) instanceof Gasolina)
+            {
+                this.ModeloTablaCoches.addRow(new Object[] {vector_coches.get(i).getvin_coche(), vector_coches.get(i).getmarca_coche(), vector_coches.get(i).getmodelo_coche(), vector_coches.get(i).getcolor_coche(), vector_coches.get(i).getprecio_coche(), ((Gasolina) vector_coches.get(i)).getdeposito_gasolina(), ""});  
+            }
+            else if(vector_coches.get(i) instanceof Electrico)
+            {
+                this.ModeloTablaCoches.addRow(new Object[] {vector_coches.get(i).getvin_coche(), vector_coches.get(i).getmarca_coche(), vector_coches.get(i).getmodelo_coche(), vector_coches.get(i).getcolor_coche(), vector_coches.get(i).getprecio_coche(), "", ((Electrico) vector_coches.get(i)).getbateria_electrico()});  
+            }
+            
+            }
+        this.ModeloTablaCoches.fireTableDataChanged();
+    
+    }
+    
+    public void cargarCochesGasolina(){
+    
+        ArrayList<Coche> vector_coches = controlador.getCochesGasolina();
         
         ModeloTablaCoches.setRowCount(0);
         
@@ -284,7 +314,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         for(int i = 0; i < vector_provisiones.size(); i++)
         {
-            this.ModeloTablaProvisiones.addRow(new Object[] {vector_provisiones.get(i).getcod_proveedor_proveer(), vector_provisiones.get(i).getvin_proveer()});  
+            this.ModeloTablaProvisiones.addRow(new Object[] {vector_provisiones.get(i).getCodigo_proveer(), vector_provisiones.get(i).getcod_proveedor_proveer(), vector_provisiones.get(i).getvin_proveer()});  
         }
         this.ModeloTablaProvisiones.fireTableDataChanged();
     
@@ -395,7 +425,7 @@ public class Ventana1 extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         Tabla_Provisiones = new javax.swing.JTable();
         jLabel_DNI3 = new javax.swing.JLabel();
-        codigo_provision = new javax.swing.JTextField();
+        codigo_proveedor_provision = new javax.swing.JTextField();
         jButton_guardar_persona3 = new javax.swing.JButton();
         jButton_cancelar_persona3 = new javax.swing.JButton();
         jButton_borrar_persona3 = new javax.swing.JButton();
@@ -403,6 +433,8 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_aniadir_persona3 = new javax.swing.JButton();
         jLabel_ciudad_natal3 = new javax.swing.JLabel();
         vin_provision = new javax.swing.JTextField();
+        jLabel_DNI4 = new javax.swing.JLabel();
+        codigo_provision = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -520,7 +552,7 @@ public class Ventana1 extends javax.swing.JFrame {
                             .addComponent(jButton_modificar_ciudad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_aniadir_ciudad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_borrar_ciudad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         jPanel_ciudadLayout.setVerticalGroup(
             jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -563,7 +595,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addGroup(jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_num_habitantes2)
                     .addComponent(ciudad_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Clientes", jPanel_ciudad);
@@ -878,7 +910,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarRevisor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarRevisor)))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Revisores", jPanel_libro);
@@ -1008,7 +1040,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarProvedor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarProvedor)))
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Provedores", jPanel_persona);
@@ -1118,7 +1150,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(guardarCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cancelarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona1Layout.setVerticalGroup(
             jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1151,7 +1183,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarCompra)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarCompra)))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Comprar", jPanel_persona1);
@@ -1256,7 +1288,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(guardarRevision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cancelarRevision, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona2Layout.setVerticalGroup(
             jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1289,7 +1321,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarRevision)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarRevision)))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Revisar", jPanel_persona2);
@@ -1323,7 +1355,7 @@ public class Ventana1 extends javax.swing.JFrame {
             Tabla_Provisiones.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jLabel_DNI3.setText("Codigo:");
+        jLabel_DNI3.setText("Codigo proveedor:");
 
         jButton_guardar_persona3.setText("Guardar");
         jButton_guardar_persona3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1331,11 +1363,21 @@ public class Ventana1 extends javax.swing.JFrame {
                 guardarProvision(evt);
             }
         });
+        jButton_guardar_persona3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_guardar_persona3ActionPerformed(evt);
+            }
+        });
 
         jButton_cancelar_persona3.setText("Cancelar");
         jButton_cancelar_persona3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cancelarProvision(evt);
+            }
+        });
+        jButton_cancelar_persona3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_cancelar_persona3ActionPerformed(evt);
             }
         });
 
@@ -1362,34 +1404,42 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_ciudad_natal3.setText("VIN:");
 
+        jLabel_DNI4.setText("Codigo:");
+
         javax.swing.GroupLayout jPanel_persona3Layout = new javax.swing.GroupLayout(jPanel_persona3);
         jPanel_persona3.setLayout(jPanel_persona3Layout);
         jPanel_persona3Layout.setHorizontalGroup(
             jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_persona3Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_modificar_persona3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_aniadir_persona3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_borrar_persona3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton_borrar_persona3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton_aniadir_persona3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton_modificar_persona3, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(jPanel_persona3Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
                         .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel_DNI3)
-                            .addComponent(jLabel_ciudad_natal3))
-                        .addGap(41, 41, 41)
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(codigo_provision, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                            .addComponent(vin_provision, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_guardar_persona3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                .addComponent(jLabel_DNI3)
+                                .addGap(13, 13, 13))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                .addComponent(jLabel_DNI4)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                .addComponent(jLabel_ciudad_natal3)
+                                .addGap(18, 18, 18)))
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(codigo_proveedor_provision, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                            .addComponent(codigo_provision)
+                            .addComponent(vin_provision))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton_guardar_persona3)
                             .addComponent(jButton_cancelar_persona3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona3Layout.setVerticalGroup(
             jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1403,19 +1453,26 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(jButton_modificar_persona3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton_borrar_persona3)))
-                .addGap(96, 96, 96)
                 .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel_DNI3)
-                        .addComponent(codigo_provision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton_guardar_persona3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel_ciudad_natal3)
-                        .addComponent(vin_provision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton_cancelar_persona3))
-                .addContainerGap(156, Short.MAX_VALUE))
+                    .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel_DNI4)
+                            .addComponent(codigo_provision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel_DNI3)
+                            .addComponent(codigo_proveedor_provision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel_ciudad_natal3)
+                            .addComponent(vin_provision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addComponent(jButton_guardar_persona3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_cancelar_persona3)))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Proveer", jPanel_persona3);
@@ -1428,15 +1485,11 @@ public class Ventana1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane)
-                .addContainerGap())
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane)
-                .addContainerGap())
+            .addComponent(jTabbedPane)
         );
 
         jTabbedPane.getAccessibleContext().setAccessibleName("Cliente");
@@ -1463,22 +1516,32 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_aniadirProveedor
 
     private void modificarProveedor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarProveedor
-
-        this.id_provedor.setText(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString());
-        this.nombre_provedor.setText(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 1).toString());
-
+        
+        if(this.Tabla_Provedores.getSelectedRow() != -1)
+        {
+            this.id_provedor.setText(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString());
+            this.nombre_provedor.setText(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 1).toString());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
     }//GEN-LAST:event_modificarProveedor
 
     private void borrarProveedor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarProveedor
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Provedores.getSelectedRow() != -1)
         {
                 if(controlador.comprobarProveedorExiste(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString()))
                 {
-                    controlador.eliminarProveedor(this.Tabla_Provedores.getSelectedRow());
+                    controlador.eliminarProveedor(this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString());
                     this.cargarProvedores();
                 }
             
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
 
     }//GEN-LAST:event_borrarProveedor
@@ -1492,18 +1555,23 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void guardarProveedor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarProveedor
 
-        String codAntiguo = this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString();
+        
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Provedores.getSelectedRow() != -1)
         {
+            String codAntiguo = this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString();
             if((this.id_provedor.getText().isEmpty() == false) && (this.nombre_provedor.getText().isEmpty() == false))
             {
                 if(codAntiguo.equals(this.id_provedor.getText()))
                 {
-                    controlador.modificarProveedor(this.Tabla_Provedores.getSelectedRow(), id_provedor.getText() , nombre_provedor.getText());
+                    controlador.modificarProveedor(id_provedor.getText() , nombre_provedor.getText());
                     this.cargarProvedores();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
 
     }//GEN-LAST:event_guardarProveedor
@@ -1525,20 +1593,31 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void modificarRevisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarRevisor
 
-        this.id_revisor.setText(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString());
-        this.nombre_revisor.setText(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 1).toString());
+        if(this.Tabla_Revisores.getSelectedRow() != -1)
+        {
+            this.id_revisor.setText(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString());
+            this.nombre_revisor.setText(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 1).toString());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
     }//GEN-LAST:event_modificarRevisor
 
     private void borrarRevisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarRevisor
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Revisores.getSelectedRow() != -1)
         {
                 if(controlador.comprobarRevisorExiste(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString()))
                 {
-                    controlador.eliminarRevisor(this.Tabla_Revisores.getSelectedRow());
+                    controlador.eliminarRevisor(this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString());
                     this.cargarRevisores();
                 }
             
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_borrarRevisor
 
@@ -1552,56 +1631,69 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void guardarRevisor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRevisor
 
-        String codAntiguo = this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString();
-
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Revisores.getSelectedRow() != -1)
         {
+            String codAntiguo = this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString();
+            
             if((this.id_revisor.getText().isEmpty() == false) && (this.nombre_revisor.getText().isEmpty() == false))
             {
                 if(codAntiguo.equals(this.id_revisor.getText()))
                 {
-                    controlador.modificarRevisor(this.Tabla_Revisores.getSelectedRow(), id_revisor.getText() , nombre_revisor.getText());
+                    controlador.modificarRevisor(id_revisor.getText() , nombre_revisor.getText());
                     this.cargarRevisores();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_guardarRevisor
 
     private void borrarCoche(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarCoche
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Coches.getSelectedRow() != -1)
         {
                 if(controlador.comprobarCocheExiste(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString()) == true)
                 {
-                    int posicion = controlador.posicionCocheBuscado(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
-                    controlador.eliminarCoche(posicion);
+                    controlador.eliminarCoche(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
                     this.cargarCoches();
                 }
             
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_borrarCoche
 
     private void modificarCoche(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarCoche
 
-        if(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).equals("") == false || this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).equals("0") == false)
-        {
-            this.vin_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
-            this.marca_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 1).toString());
-            this.modelo_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 2).toString());
-            this.precio_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 4).toString());
-            this.color_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 3).toString());
-            this.deposito_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).toString());
-            this.bateria_coche.setText("0.0");
+        if(this.Tabla_Coches.getSelectedRow() != -1){
+            if(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).equals("") == false || this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).equals("0") == false)
+            {
+                this.vin_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
+                this.marca_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 1).toString());
+                this.modelo_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 2).toString());
+                this.precio_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 4).toString());
+                this.color_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 3).toString());
+                this.deposito_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).toString());
+                this.bateria_coche.setText("0.0");
+            }
+            else if(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).equals("") == false || this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).equals("0.0") == false)
+            {
+                this.vin_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
+                this.marca_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 1).toString());
+                this.modelo_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 2).toString());
+                this.precio_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 4).toString());
+                this.color_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 3).toString());
+                this.deposito_coche.setText("0");
+                this.bateria_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).toString());
+            }
         }
-        else if(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).equals("") == false || this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 5).equals("0.0") == false)
+        else
         {
-            this.vin_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
-            this.marca_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 1).toString());
-            this.modelo_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 2).toString());
-            this.precio_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 4).toString());
-            this.color_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 3).toString());
-            this.deposito_coche.setText("0");
-            this.bateria_coche.setText(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 6).toString());
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_modificarCoche
 
@@ -1641,20 +1733,24 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void guardarCoche(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarCoche
 
-        int vinAntiguo = Integer.parseInt(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Coches.getSelectedRow() != -1)
         {
+            int vinAntiguo = Integer.parseInt(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
+            
             if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) || (this.bateria_coche.getText().isEmpty() == false))
             {
                 if(vinAntiguo == Integer.parseInt(this.vin_coche.getText()))
                 {
-                    int posicion = controlador.posicionCocheBuscado(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
-                    controlador.modificarCoche(posicion, Double.parseDouble(bateria_coche.getText()), Integer.parseInt(deposito_coche.getText()), vin_coche.getText(), marca_coche.getText(), modelo_coche.getText(),Float.parseFloat(precio_coche.getText()), color_coche.getText());
+                    controlador.modificarCoche(Double.parseDouble(bateria_coche.getText()), Integer.parseInt(deposito_coche.getText()), vin_coche.getText(), marca_coche.getText(), modelo_coche.getText(),Float.parseFloat(precio_coche.getText()), color_coche.getText());
                     this.cargarCoches();
                     
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_guardarCoche
 
@@ -1669,43 +1765,56 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void guardarCliente(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarCliente
 
-        String dniAntiguo = this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString();
-
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Clientes.getSelectedRow() != -1)
         {
+            String dniAntiguo = this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString();
             if((this.dni_cliente.getText().isEmpty() == false) && (this.nombre_cliente.getText().isEmpty() == false) && (this.direccion_cliente.getText().isEmpty() == false) && (this.ciudad_cliente.getText().isEmpty() == false) && (this.telefono_cliente.getText().isEmpty() == false))
             {
                 if(dniAntiguo.equals(this.dni_cliente.getText()))
                 {
-                    controlador.modificarCliente(this.Tabla_Clientes.getSelectedRow(), this.dni_cliente.getText(), this.nombre_cliente.getText(), this.direccion_cliente.getText(), this.ciudad_cliente.getText(), this.telefono_cliente.getText());
+                    controlador.modificarCliente(this.dni_cliente.getText(), this.nombre_cliente.getText(), this.direccion_cliente.getText(), this.ciudad_cliente.getText(), this.telefono_cliente.getText());
                     cargarClientes();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
     }//GEN-LAST:event_guardarCliente
 
     private void eliminarCliente(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarCliente
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Clientes.getSelectedRow() != -1)
         {
             if(controlador.comprobarClienteExiste(this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString()) == true)
             {
-                controlador.eliminarCliente(this.Tabla_Clientes.getSelectedRow());
+                controlador.eliminarCliente(this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString());
                 cargarClientes();
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_eliminarCliente
 
     private void modificarCliente(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarCliente
+        
+        if(this.Tabla_Clientes.getSelectedRow() != -1){
+            Cliente cliente = controlador.buscarCliente(this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString());
 
-        Cliente cliente = controlador.buscarCliente(this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString());
-
-        this.dni_cliente.setText(cliente.getdni_cliente());
-        this.nombre_cliente.setText(cliente.getnombre_cliente());
-        this.direccion_cliente.setText(cliente.getdireccion_cliente());
-        this.ciudad_cliente.setText(cliente.getciudad_cliente());
-        this.telefono_cliente.setText(cliente.getnumero_telefono_cliente());
+            this.dni_cliente.setText(cliente.getdni_cliente());
+            this.nombre_cliente.setText(cliente.getnombre_cliente());
+            this.direccion_cliente.setText(cliente.getdireccion_cliente());
+            this.ciudad_cliente.setText(cliente.getciudad_cliente());
+            this.telefono_cliente.setText(cliente.getnumero_telefono_cliente());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
     }//GEN-LAST:event_modificarCliente
 
     private void aniadirCliente(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aniadirCliente
@@ -1742,40 +1851,55 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void modificarCompra(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarCompra
         
-        this.dni_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString());
-        this.vin_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString());
-        this.matricula_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString());
-        
+        if(this.Tabla_Compras.getSelectedRow() != -1)
+        {
+            this.dni_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString());
+            this.vin_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString());
+            this.matricula_compra.setText(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
     }//GEN-LAST:event_modificarCompra
 
     private void borrarCompra(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarCompra
         
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Compras.getSelectedRow() != -1)
         {
-            if(controlador.comprobarCompraExiste(this.matricula_compra.getText(), LocalDateTime.parse(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 3).toString())) == false)
+            if(controlador.comprobarCompraExiste(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString(), LocalDateTime.parse(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 3).toString())) == false)
             {
-                controlador.eliminarCompra(this.Tabla_Compras.getSelectedRow());
+                controlador.eliminarCompra(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString());
                 this.cargarCompras();
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_borrarCompra
 
     private void guardarCompra(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarCompra
         
-        String matricula = this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString();
+        
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Compras.getSelectedRow() != -1)
         {
+            String matricula = this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString();
             if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
             {
                 if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)) || ((matricula.equals(this.matricula_compra.getText()) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)))
                 {
                     LocalDateTime fechaHoraActual = LocalDateTime.now();
-                    controlador.modificarCompra(this.Tabla_Compras.getSelectedRow(), this.matricula_compra.getText(), fechaHoraActual, this.dni_compra.getText(), this.vin_compra.getText());
+                    controlador.modificarCompra(this.matricula_compra.getText(), fechaHoraActual, this.dni_compra.getText(), this.vin_compra.getText());
                     this.cargarCompras();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_guardarCompra
@@ -1806,39 +1930,53 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void modificarRevision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarRevision
         
-        this.codigo_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString());
-        this.vin_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 2).toString());
-        this.codigo_revisor_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 1).toString());
+        if(this.Tabla_Reviones.getSelectedRow() != -1)
+        {
+            this.codigo_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString());
+            this.vin_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 2).toString());
+            this.codigo_revisor_revisar.setText(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 1).toString());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
         
     }//GEN-LAST:event_modificarRevision
 
     private void borrarRevision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarRevision
         
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Reviones.getSelectedRow() != -1)
         {
             if(controlador.comprobarRevisionExiste(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString()) == true)
             {
-                controlador.eliminarRevision(this.Tabla_Reviones.getSelectedRow());
+                controlador.eliminarRevision(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString());
                 this.cargarRevisiones();
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_borrarRevision
 
     private void guardarRevision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRevision
         
-        String codigo_revision = this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString();
-
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Reviones.getSelectedRow() != -1)
         {
+            String codigo_revision = this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString();
             if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false))
             {
                 if((codigo_revision.equals(this.codigo_revisar.getText().toString()) == true) && (controlador.comprobarRevisorExiste(this.codigo_revisor_revisar.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_revisar.getText()) == true))
                 {
-                    controlador.modificarRevision(this.Tabla_Reviones.getSelectedRow(), this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText());
+                    controlador.modificarRevision(this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText());
                     this.cargarRevisiones();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_guardarRevision
@@ -1852,61 +1990,85 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void cancelarProvision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarProvision
         
-        this.codigo_provision.setText("");
+        this.codigo_proveedor_provision.setText("");
         this.vin_provision.setText("");
         
     }//GEN-LAST:event_cancelarProvision
 
     private void guardarProvision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarProvision
         
-        String codigo = this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString();
+        
 
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Provisiones.getSelectedRow() != -1)
         {
-            if((this.codigo_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false))
+            String codigo = this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString();
+            if((this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false))
             {
-                if((codigo.equals(this.codigo_provision.getText().toString()) == true) && (controlador.comprobarProveedorExiste(this.codigo_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_provision.getText().toString(), this.vin_provision.getText()) == false))
+                if((codigo.equals(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
                 {
-                    controlador.modificarProvision(this.Tabla_Provisiones.getSelectedRow(), this.codigo_provision.getText().toString(), this.vin_provision.getText());
+                    controlador.modificarProvision(this.codigo_provision.getText(),this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText());
                     this.cargarProvisiones();
                 }
             }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_guardarProvision
 
     private void borrarProvision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrarProvision
         
-        if(controlador != null)
+        if(controlador != null && this.Tabla_Provisiones.getSelectedRow() != -1)
         {
-                controlador.eliminarProvision(this.Tabla_Provisiones.getSelectedRow());
+                controlador.eliminarProvision(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString());
                 this.cargarProvisiones();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
         }
         
     }//GEN-LAST:event_borrarProvision
 
     private void modificarProvision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modificarProvision
         
-        this.codigo_provision.setText(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString());
-        this.vin_provision.setText(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 1).toString());
-        
+        if(this.Tabla_Provisiones.getSelectedRow() != -1)
+        {
+            this.codigo_provision.setText(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString());
+            this.codigo_proveedor_provision.setText(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 1).toString());
+            this.vin_provision.setText(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 2).toString());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
     }//GEN-LAST:event_modificarProvision
 
     private void aniadirProvision(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aniadirProvision
         
         if(controlador != null)
         {
-            if((this.codigo_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false))
+            if((this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false) && (this.codigo_provision.getText().isEmpty() == false))
             {
-                if((controlador.comprobarProvisionExiste(this.codigo_provision.getText().toString(), this.vin_provision.getText()) == false) && (controlador.comprobarProveedorExiste(this.codigo_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_provision.getText().toString(), this.vin_provision.getText()) == false))
+                if((controlador.comprobarProvisionExiste(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false) && (controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
                 {
-                    controlador.aniadirProvision(this.codigo_provision.getText(), this.vin_provision.getText());
+                    controlador.aniadirProvision(this.codigo_provision.getText(), this.codigo_proveedor_provision.getText(), this.vin_provision.getText());
                     this.cargarProvisiones();
                 }
             }
         }
         
     }//GEN-LAST:event_aniadirProvision
+
+    private void jButton_guardar_persona3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_persona3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_guardar_persona3ActionPerformed
+
+    private void jButton_cancelar_persona3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cancelar_persona3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_cancelar_persona3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1925,6 +2087,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton cancelarRevision;
     public javax.swing.JButton cancelarRevisor;
     public javax.swing.JTextField ciudad_cliente;
+    private javax.swing.JTextField codigo_proveedor_provision;
     private javax.swing.JTextField codigo_provision;
     private javax.swing.JTextField codigo_revisar;
     private javax.swing.JTextField codigo_revisor_revisar;
@@ -1967,6 +2130,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_DNI1;
     private javax.swing.JLabel jLabel_DNI2;
     private javax.swing.JLabel jLabel_DNI3;
+    private javax.swing.JLabel jLabel_DNI4;
     private javax.swing.JLabel jLabel_ciudad_natal1;
     private javax.swing.JLabel jLabel_ciudad_natal2;
     private javax.swing.JLabel jLabel_ciudad_natal3;
