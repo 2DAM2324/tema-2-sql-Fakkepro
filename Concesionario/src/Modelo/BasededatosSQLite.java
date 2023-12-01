@@ -1241,7 +1241,7 @@ public class BasededatosSQLite {
 
             // Confirmar la transacción
             getConnection().commit();
-            JOptionPane.showMessageDialog(null, "Revisión añadida correctamente.");
+                JOptionPane.showMessageDialog(null, "Revisión añadida correctamente.");
         } catch (SQLException e) {
             // Deshacer la transacción en caso de error
             try {

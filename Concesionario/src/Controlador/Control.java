@@ -277,10 +277,10 @@ public class Control {
             if(revi.getcod_revisor_revisores().equalsIgnoreCase(codigo))
             {        
                 existe = true;
+                return existe;
             }
         
         }
-    
         return existe;
     }
     
@@ -321,11 +321,11 @@ public class Control {
         
             if(com.getmatricula_comprar().equalsIgnoreCase(matricula))
             {         
-                existe = true;
+                return true;
             }
         
         }
-    
+        
         return existe;
     }
     
@@ -350,7 +350,7 @@ public class Control {
                 return puedeComprarlo;
             }
              
-            if(((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == false) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true)) || ((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) != true)))
+            if((((com.getvin_comprar().equalsIgnoreCase(vin) == false) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true))) || (((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == false) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == true))) || (((com.getvin_comprar().equalsIgnoreCase(vin)) && (com.getdni_comprar().equalsIgnoreCase(dni) == true) && (com.getmatricula_comprar().equalsIgnoreCase(matricula) == false))))
             {
                 puedeComprarlo = true;
                 return puedeComprarlo;
@@ -376,7 +376,7 @@ public class Control {
             }
         i++;
         }
-    
+        JOptionPane.showMessageDialog(null, "No se ha encontrado la compra.");
         return compra;
     }
     

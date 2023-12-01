@@ -71,6 +71,12 @@ public class Ventana1 extends javax.swing.JFrame {
     private DefaultTableModel ModeloTablaCompras;
     private DefaultTableModel ModeloTablaRevisiones;
     private DefaultTableModel ModeloTablaProvisiones;
+    private DefaultTableModel ModeloTablaDetallesClienteCompra;
+    private DefaultTableModel ModeloTablaDetallesCocheCompra;
+    private DefaultTableModel ModeloTablaDetallesRevisoresRevision;
+    private DefaultTableModel ModeloTablaDetallesCocheRevision;
+    private DefaultTableModel ModeloTablaDetallesProveedoresProvision;
+    private DefaultTableModel ModeloTablaDetallesCocheProvision;
     
     /**
      * Creates new form Ventana1
@@ -92,6 +98,14 @@ public class Ventana1 extends javax.swing.JFrame {
         ModeloTablaClientes.addColumn("Ciudad");
         this.Tabla_Clientes.setModel(ModeloTablaClientes);
         
+        ModeloTablaDetallesClienteCompra = new DefaultTableModel();
+        ModeloTablaDetallesClienteCompra.addColumn("DNI");
+        ModeloTablaDetallesClienteCompra.addColumn("Nombre");
+        ModeloTablaDetallesClienteCompra.addColumn("Teléfono");
+        ModeloTablaDetallesClienteCompra.addColumn("Dirección");
+        ModeloTablaDetallesClienteCompra.addColumn("Ciudad");
+        this.Tabla_DetallesClientesComprar.setModel(ModeloTablaDetallesClienteCompra);
+        
         ModeloTablaCoches = new DefaultTableModel();
         ModeloTablaCoches.addColumn("VIN");
         ModeloTablaCoches.addColumn("Marca");
@@ -102,10 +116,50 @@ public class Ventana1 extends javax.swing.JFrame {
         ModeloTablaCoches.addColumn("Bateria");
         this.Tabla_Coches.setModel(ModeloTablaCoches);
         
+        ModeloTablaDetallesCocheCompra = new DefaultTableModel();
+        ModeloTablaDetallesCocheCompra.addColumn("VIN");
+        ModeloTablaDetallesCocheCompra.addColumn("Marca");
+        ModeloTablaDetallesCocheCompra.addColumn("Modelo");
+        ModeloTablaDetallesCocheCompra.addColumn("Color");
+        ModeloTablaDetallesCocheCompra.addColumn("Precio");
+        ModeloTablaDetallesCocheCompra.addColumn("Deposito");
+        ModeloTablaDetallesCocheCompra.addColumn("Bateria");
+        this.Tabla_DetallesCocheComprar.setModel(ModeloTablaDetallesCocheCompra);
+        
+        ModeloTablaDetallesCocheRevision = new DefaultTableModel();
+        ModeloTablaDetallesCocheRevision.addColumn("VIN");
+        ModeloTablaDetallesCocheRevision.addColumn("Marca");
+        ModeloTablaDetallesCocheRevision.addColumn("Modelo");
+        ModeloTablaDetallesCocheRevision.addColumn("Color");
+        ModeloTablaDetallesCocheRevision.addColumn("Precio");
+        ModeloTablaDetallesCocheRevision.addColumn("Deposito");
+        ModeloTablaDetallesCocheRevision.addColumn("Bateria");
+        this.Tabla_DetallesCocheRevisar.setModel(ModeloTablaDetallesCocheRevision);
+        
+        ModeloTablaDetallesCocheProvision = new DefaultTableModel();
+        ModeloTablaDetallesCocheProvision.addColumn("VIN");
+        ModeloTablaDetallesCocheProvision.addColumn("Marca");
+        ModeloTablaDetallesCocheProvision.addColumn("Modelo");
+        ModeloTablaDetallesCocheProvision.addColumn("Color");
+        ModeloTablaDetallesCocheProvision.addColumn("Precio");
+        ModeloTablaDetallesCocheProvision.addColumn("Deposito");
+        ModeloTablaDetallesCocheProvision.addColumn("Bateria");
+        this.Tabla_DetallesCocheProveer.setModel(ModeloTablaDetallesCocheProvision);
+        
         ModeloTablaRevisores = new DefaultTableModel();
         ModeloTablaRevisores.addColumn("Identificador");
         ModeloTablaRevisores.addColumn("Nombre");
         this.Tabla_Revisores.setModel(ModeloTablaRevisores);
+        
+        ModeloTablaDetallesRevisoresRevision = new DefaultTableModel();
+        ModeloTablaDetallesRevisoresRevision.addColumn("Identificador");
+        ModeloTablaDetallesRevisoresRevision.addColumn("Nombre");
+        this.Tabla_DetallesRevisoresRevisar.setModel(ModeloTablaDetallesRevisoresRevision);
+        
+        ModeloTablaDetallesProveedoresProvision = new DefaultTableModel();
+        ModeloTablaDetallesProveedoresProvision.addColumn("Identificador");
+        ModeloTablaDetallesProveedoresProvision.addColumn("Nombre");
+        this.Tabla_DetallesProveedoresProveer.setModel(ModeloTablaDetallesProveedoresProvision);
         
         ModeloTablaProveedores = new DefaultTableModel();
         ModeloTablaProveedores.addColumn("Identificador");
@@ -284,8 +338,6 @@ public class Ventana1 extends javax.swing.JFrame {
         
         ModeloTablaCompras.setRowCount(0);
         
-        //this.ModeloTablaCompras.addRow(new Object[] {"Prueba", "Prueba", "Prueba", 3});  
-        
         for(int i = 0; i < vector_compras.size(); i++)
         {
             this.ModeloTablaCompras.addRow(new Object[] {vector_compras.get(i).getdni_comprar(), vector_compras.get(i).getvin_comprar(), vector_compras.get(i).getmatricula_comprar(), vector_compras.get(i).getFechayHora().toString()});  
@@ -407,6 +459,10 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_aniadir_persona1 = new javax.swing.JButton();
         jLabel_ciudad_natal1 = new javax.swing.JLabel();
         matricula_compra = new javax.swing.JTextField();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        Tabla_DetallesCocheComprar = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        Tabla_DetallesClientesComprar = new javax.swing.JTable();
         jPanel_persona2 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         Tabla_Reviones = new javax.swing.JTable();
@@ -421,6 +477,10 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_aniadir_persona2 = new javax.swing.JButton();
         jLabel_ciudad_natal2 = new javax.swing.JLabel();
         codigo_revisor_revisar = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        Tabla_DetallesCocheRevisar = new javax.swing.JTable();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        Tabla_DetallesRevisoresRevisar = new javax.swing.JTable();
         jPanel_persona3 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         Tabla_Provisiones = new javax.swing.JTable();
@@ -435,6 +495,10 @@ public class Ventana1 extends javax.swing.JFrame {
         vin_provision = new javax.swing.JTextField();
         jLabel_DNI4 = new javax.swing.JLabel();
         codigo_provision = new javax.swing.JTextField();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        Tabla_DetallesCocheProveer = new javax.swing.JTable();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        Tabla_DetallesProveedoresProveer = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -595,7 +659,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addGroup(jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_num_habitantes2)
                     .addComponent(ciudad_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Clientes", jPanel_ciudad);
@@ -910,7 +974,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarRevisor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarRevisor)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Revisores", jPanel_libro);
@@ -1040,7 +1104,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarProvedor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarProvedor)))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(304, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Provedores", jPanel_persona);
@@ -1121,6 +1185,70 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_ciudad_natal1.setText("Matricula:");
 
+        Tabla_DetallesCocheComprar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "VIN", "Marca", "Modelo", "Color", "Precio", "Bateria", "Deposito"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.Double.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(Tabla_DetallesCocheComprar);
+        if (Tabla_DetallesCocheComprar.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(2).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(3).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(4).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(5).setResizable(false);
+            Tabla_DetallesCocheComprar.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        Tabla_DetallesClientesComprar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null}
+            },
+            new String [] {
+                "DNI", "Nombre", "Teléfono"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(Tabla_DetallesClientesComprar);
+        if (Tabla_DetallesClientesComprar.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesClientesComprar.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesClientesComprar.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_DetallesClientesComprar.getColumnModel().getColumn(2).setResizable(false);
+        }
+
         javax.swing.GroupLayout jPanel_persona1Layout = new javax.swing.GroupLayout(jPanel_persona1);
         jPanel_persona1.setLayout(jPanel_persona1Layout);
         jPanel_persona1Layout.setHorizontalGroup(
@@ -1138,18 +1266,22 @@ public class Ventana1 extends javax.swing.JFrame {
                     .addGroup(jPanel_persona1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel_DNI1)
-                            .addComponent(jLabel_edad_persona1)
-                            .addComponent(jLabel_ciudad_natal1))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dni_compra, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                            .addComponent(vin_compra)
-                            .addComponent(matricula_compra, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(guardarCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cancelarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel_persona1Layout.createSequentialGroup()
+                                .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel_DNI1)
+                                    .addComponent(jLabel_edad_persona1)
+                                    .addComponent(jLabel_ciudad_natal1))
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dni_compra, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                                    .addComponent(vin_compra)
+                                    .addComponent(matricula_compra, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel_persona1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(guardarCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cancelarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona1Layout.setVerticalGroup(
@@ -1183,7 +1315,11 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarCompra)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarCompra)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Comprar", jPanel_persona1);
@@ -1259,6 +1395,69 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_ciudad_natal2.setText("Codigo revisor");
 
+        Tabla_DetallesCocheRevisar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "VIN", "Marca", "Modelo", "Color", "Precio", "Bateria", "Deposito"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.Double.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane9.setViewportView(Tabla_DetallesCocheRevisar);
+        if (Tabla_DetallesCocheRevisar.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(2).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(3).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(4).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(5).setResizable(false);
+            Tabla_DetallesCocheRevisar.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        Tabla_DetallesRevisoresRevisar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Identificador", "Nombre"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane12.setViewportView(Tabla_DetallesRevisoresRevisar);
+        if (Tabla_DetallesRevisoresRevisar.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesRevisoresRevisar.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesRevisoresRevisar.getColumnModel().getColumn(1).setResizable(false);
+        }
+
         javax.swing.GroupLayout jPanel_persona2Layout = new javax.swing.GroupLayout(jPanel_persona2);
         jPanel_persona2.setLayout(jPanel_persona2Layout);
         jPanel_persona2Layout.setHorizontalGroup(
@@ -1276,18 +1475,22 @@ public class Ventana1 extends javax.swing.JFrame {
                     .addGroup(jPanel_persona2Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel_DNI2)
-                            .addComponent(jLabel_edad_persona2)
-                            .addComponent(jLabel_ciudad_natal2))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(codigo_revisar, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                            .addComponent(vin_revisar)
-                            .addComponent(codigo_revisor_revisar, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(guardarRevision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cancelarRevision, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel_persona2Layout.createSequentialGroup()
+                                .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel_DNI2)
+                                    .addComponent(jLabel_edad_persona2)
+                                    .addComponent(jLabel_ciudad_natal2))
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(codigo_revisar, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                                    .addComponent(vin_revisar)
+                                    .addComponent(codigo_revisor_revisar, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel_persona2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(guardarRevision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cancelarRevision, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona2Layout.setVerticalGroup(
@@ -1321,7 +1524,11 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(guardarRevision)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarRevision)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Revisar", jPanel_persona2);
@@ -1406,39 +1613,109 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_DNI4.setText("Codigo:");
 
+        Tabla_DetallesCocheProveer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "VIN", "Marca", "Modelo", "Color", "Precio", "Bateria", "Deposito"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.Double.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(Tabla_DetallesCocheProveer);
+        if (Tabla_DetallesCocheProveer.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(2).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(3).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(4).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(5).setResizable(false);
+            Tabla_DetallesCocheProveer.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        Tabla_DetallesProveedoresProveer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Identificador", "Nombre"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane13.setViewportView(Tabla_DetallesProveedoresProveer);
+        if (Tabla_DetallesProveedoresProveer.getColumnModel().getColumnCount() > 0) {
+            Tabla_DetallesProveedoresProveer.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_DetallesProveedoresProveer.getColumnModel().getColumn(1).setResizable(false);
+        }
+
         javax.swing.GroupLayout jPanel_persona3Layout = new javax.swing.GroupLayout(jPanel_persona3);
         jPanel_persona3.setLayout(jPanel_persona3Layout);
         jPanel_persona3Layout.setHorizontalGroup(
             jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_persona3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_persona3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton_borrar_persona3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton_aniadir_persona3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton_modificar_persona3, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addContainerGap()
+                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton_borrar_persona3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton_aniadir_persona3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton_modificar_persona3, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                                .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                        .addComponent(jLabel_DNI3)
+                                        .addGap(13, 13, 13))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                        .addComponent(jLabel_DNI4)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
+                                        .addComponent(jLabel_ciudad_natal3)
+                                        .addGap(18, 18, 18)))
+                                .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(codigo_proveedor_provision, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                                    .addComponent(codigo_provision)
+                                    .addComponent(vin_provision))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton_guardar_persona3)
+                                    .addComponent(jButton_cancelar_persona3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel_persona3Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
                         .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
-                                .addComponent(jLabel_DNI3)
-                                .addGap(13, 13, 13))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
-                                .addComponent(jLabel_DNI4)
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_persona3Layout.createSequentialGroup()
-                                .addComponent(jLabel_ciudad_natal3)
-                                .addGap(18, 18, 18)))
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(codigo_proveedor_provision, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                            .addComponent(codigo_provision)
-                            .addComponent(vin_provision))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel_persona3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton_guardar_persona3)
-                            .addComponent(jButton_cancelar_persona3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel_persona3Layout.setVerticalGroup(
@@ -1472,7 +1749,11 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(jButton_guardar_persona3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton_cancelar_persona3)))
-                .addContainerGap(168, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Proveer", jPanel_persona3);
@@ -1485,7 +1766,7 @@ public class Ventana1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE))
+                .addComponent(jTabbedPane))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1738,7 +2019,7 @@ public class Ventana1 extends javax.swing.JFrame {
         {
             int vinAntiguo = Integer.parseInt(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
             
-            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) || (this.bateria_coche.getText().isEmpty() == false))
+            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) && (this.bateria_coche.getText().isEmpty() == false))
             {
                 if(vinAntiguo == Integer.parseInt(this.vin_coche.getText()))
                 {
@@ -1839,10 +2120,14 @@ public class Ventana1 extends javax.swing.JFrame {
             if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
             {
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
-                if((controlador.comprobarCompraExiste(this.matricula_compra.getText(), fechaHoraActual) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true))
+                if((controlador.comprobarCompraExiste(this.matricula_compra.getText(), fechaHoraActual) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false))
                 {
                     controlador.aniadirCompra(this.matricula_compra.getText(), fechaHoraActual, this.dni_compra.getText(),this.vin_compra.getText());
                     this.cargarCompras();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el cliente no esta registrado, o ya esta registrado que el cliente compro ese coche.");
                 }
             }
         }
@@ -1867,9 +2152,9 @@ public class Ventana1 extends javax.swing.JFrame {
         
         if(controlador != null && this.Tabla_Compras.getSelectedRow() != -1)
         {
-            if(controlador.comprobarCompraExiste(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString(), LocalDateTime.parse(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 3).toString())) == false)
+            if(controlador.comprobarCompraExiste(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString(), LocalDateTime.parse(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 3).toString())) == true)
             {
-                controlador.eliminarCompra(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString());
+                controlador.eliminarCompra(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString());
                 this.cargarCompras();
             }
         }
@@ -1889,11 +2174,15 @@ public class Ventana1 extends javax.swing.JFrame {
             String matricula = this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString();
             if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
             {
-                if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)) || ((matricula.equals(this.matricula_compra.getText()) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)))
+                if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false)) || ((matricula.equals(this.matricula_compra.getText()) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false)))
                 {
                     LocalDateTime fechaHoraActual = LocalDateTime.now();
                     controlador.modificarCompra(this.matricula_compra.getText(), fechaHoraActual, this.dni_compra.getText(), this.vin_compra.getText());
                     this.cargarCompras();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el cliente no esta registrado, o ya esta registrado que el cliente compro ese coche.");
                 }
             }
         }
@@ -1922,6 +2211,10 @@ public class Ventana1 extends javax.swing.JFrame {
                 {
                     controlador.aniadirRevision(this.codigo_revisar.getText(), this.codigo_revisor_revisar.getText(), this.vin_revisar.getText());
                     this.cargarRevisiones();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el revisor no esta registrado, o ya esta registrado que el revisor reviso ese coche.");
                 }
             }
         }
@@ -1967,12 +2260,17 @@ public class Ventana1 extends javax.swing.JFrame {
             String codigo_revision = this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString();
             if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false))
             {
-                if((codigo_revision.equals(this.codigo_revisar.getText().toString()) == true) && (controlador.comprobarRevisorExiste(this.codigo_revisor_revisar.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_revisar.getText()) == true))
+                if((codigo_revision.equals(this.codigo_revisar.getText().toString()) == true)  && (controlador.comprobarRevisionCocheRevisor(this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText()) == false) && (controlador.comprobarRevisorExiste(this.codigo_revisor_revisar.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_revisar.getText()) == true))
                 {
                     controlador.modificarRevision(this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText());
                     this.cargarRevisiones();
                 }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el revisor no esta registrado, o ya esta registrado que el revisor reviso ese coche.");
+                }
             }
+                
         }
         else
         {
@@ -2001,13 +2299,16 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null && this.Tabla_Provisiones.getSelectedRow() != -1)
         {
-            String codigo = this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 0).toString();
             if((this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false))
             {
-                if((codigo.equals(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
+                if((controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
                 {
                     controlador.modificarProvision(this.codigo_provision.getText(),this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText());
                     this.cargarProvisiones();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el proveedor no esta registrado, o ya esta registrado que el proveedor dió ese coche.");
                 }
             }
         }
@@ -2057,6 +2358,10 @@ public class Ventana1 extends javax.swing.JFrame {
                     controlador.aniadirProvision(this.codigo_provision.getText(), this.codigo_proveedor_provision.getText(), this.vin_provision.getText());
                     this.cargarProvisiones();
                 }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "El coche o el proveedor no esta registrado, o ya esta registrado que el proveedor dió ese coche.");
+                }
             }
         }
         
@@ -2075,6 +2380,12 @@ public class Ventana1 extends javax.swing.JFrame {
     public javax.swing.JTable Tabla_Clientes;
     private javax.swing.JTable Tabla_Coches;
     public javax.swing.JTable Tabla_Compras;
+    public javax.swing.JTable Tabla_DetallesClientesComprar;
+    private javax.swing.JTable Tabla_DetallesCocheComprar;
+    private javax.swing.JTable Tabla_DetallesCocheProveer;
+    private javax.swing.JTable Tabla_DetallesCocheRevisar;
+    public javax.swing.JTable Tabla_DetallesProveedoresProveer;
+    private javax.swing.JTable Tabla_DetallesRevisoresRevisar;
     public javax.swing.JTable Tabla_Provedores;
     public javax.swing.JTable Tabla_Provisiones;
     public javax.swing.JTable Tabla_Reviones;
@@ -2160,12 +2471,18 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_persona2;
     private javax.swing.JPanel jPanel_persona3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
