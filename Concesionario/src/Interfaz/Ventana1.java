@@ -53,6 +53,8 @@ import Modelo.Revisores;
 import Modelo.Revisar;
 import Modelo.Comprar;
 import Modelo.Proveer;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -89,6 +91,14 @@ public class Ventana1 extends javax.swing.JFrame {
     public Ventana1() throws IOException, FileNotFoundException, ClassNotFoundException, NotSerializableException, SAXException {
         initComponents();
         controlador = new Control();
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                controlador.getBd().cerrarBasedeDatos();// Llama a tu método para cerrar la conexión
+                System.exit(0); // Cierra la aplicación
+            }
+        });
         
         ModeloTablaClientes = new DefaultTableModel();
         ModeloTablaClientes.addColumn("DNI");
@@ -1134,6 +1144,11 @@ public class Ventana1 extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        Tabla_Compras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detallesComprar(evt);
+            }
+        });
         jScrollPane5.setViewportView(Tabla_Compras);
         if (Tabla_Compras.getColumnModel().getColumnCount() > 0) {
             Tabla_Compras.getColumnModel().getColumn(0).setResizable(false);
@@ -1347,6 +1362,11 @@ public class Ventana1 extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        Tabla_Reviones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detallesRevisar(evt);
+            }
+        });
         jScrollPane6.setViewportView(Tabla_Reviones);
         if (Tabla_Reviones.getColumnModel().getColumnCount() > 0) {
             Tabla_Reviones.getColumnModel().getColumn(0).setResizable(false);
@@ -1554,6 +1574,11 @@ public class Ventana1 extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        Tabla_Provisiones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detallesProveer(evt);
             }
         });
         jScrollPane7.setViewportView(Tabla_Provisiones);
@@ -2174,7 +2199,7 @@ public class Ventana1 extends javax.swing.JFrame {
             String matricula = this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString();
             if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
             {
-                if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false)) || ((matricula.equals(this.matricula_compra.getText()) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false)))
+                if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)) || ((matricula.equals(this.matricula_compra.getText()) == true) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)))
                 {
                     LocalDateTime fechaHoraActual = LocalDateTime.now();
                     controlador.modificarCompra(this.matricula_compra.getText(), fechaHoraActual, this.dni_compra.getText(), this.vin_compra.getText());
@@ -2374,6 +2399,106 @@ public class Ventana1 extends javax.swing.JFrame {
     private void jButton_cancelar_persona3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cancelar_persona3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_cancelar_persona3ActionPerformed
+
+    private void detallesComprar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detallesComprar
+        
+        if(controlador != null && this.Tabla_Compras.getSelectedRow() != -1)
+        {
+            Cliente cliente = controlador.buscarCliente(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 0).toString());
+        
+            this.ModeloTablaDetallesClienteCompra.setRowCount(0);
+        
+            this.ModeloTablaDetallesClienteCompra.addRow(new Object[] {cliente.getdni_cliente(), cliente.getnombre_cliente(), cliente.getnumero_telefono_cliente(), cliente.getdireccion_cliente(), cliente.getciudad_cliente()});  
+     
+            this.ModeloTablaDetallesClienteCompra.fireTableDataChanged();
+            
+            Coche coche = controlador.buscarCoche(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString());
+            
+            this.ModeloTablaDetallesCocheCompra.setRowCount(0);
+            
+            if(coche instanceof Gasolina)
+            {
+                this.ModeloTablaDetallesCocheCompra.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), ((Gasolina) coche).getdeposito_gasolina(), ""});  
+            }
+            else if(coche instanceof Electrico)
+            {
+                this.ModeloTablaDetallesCocheCompra.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), "", ((Electrico) coche).getbateria_electrico()});  
+            }
+            
+            this.ModeloTablaDetallesCocheCompra.fireTableDataChanged();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
+        
+    }//GEN-LAST:event_detallesComprar
+
+    private void detallesRevisar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detallesRevisar
+        
+        if(controlador != null && this.Tabla_Reviones.getSelectedRow() != -1)
+        {
+            Revisores revisor = controlador.buscarRevisor(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 1).toString());
+        
+            this.ModeloTablaDetallesRevisoresRevision.setRowCount(0);
+        
+            this.ModeloTablaDetallesRevisoresRevision.addRow(new Object[] {revisor.getcod_revisor_revisores(), revisor.getNombre_revisores()});  
+        
+            this.ModeloTablaDetallesRevisoresRevision.fireTableDataChanged();
+            
+            Coche coche = controlador.buscarCoche(this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 2).toString());
+
+            this.ModeloTablaDetallesCocheRevision.setRowCount(0);
+            
+            if(coche instanceof Gasolina)
+            {
+                this.ModeloTablaDetallesCocheRevision.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), ((Gasolina) coche).getdeposito_gasolina(), ""});  
+            }
+            else if(coche instanceof Electrico)
+            {
+                this.ModeloTablaDetallesCocheRevision.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), "", ((Electrico) coche).getbateria_electrico()});  
+            }
+            
+            this.ModeloTablaDetallesCocheRevision.fireTableDataChanged();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
+        
+    }//GEN-LAST:event_detallesRevisar
+
+    private void detallesProveer(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detallesProveer
+        if(controlador != null && this.Tabla_Provisiones.getSelectedRow() != -1)
+        {
+            Proveedor proveedor = controlador.buscarProveedor(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 1).toString());
+        
+            this.ModeloTablaDetallesProveedoresProvision.setRowCount(0);
+
+            this.ModeloTablaDetallesProveedoresProvision.addRow(new Object[] {proveedor.getcod_proveedor(), proveedor.getnombre_provedor()});  
+       
+            this.ModeloTablaDetallesProveedoresProvision.fireTableDataChanged();
+            
+            Coche coche = controlador.buscarCoche(this.ModeloTablaProvisiones.getValueAt(this.Tabla_Provisiones.getSelectedRow(), 2).toString());
+
+            this.ModeloTablaDetallesCocheProvision.setRowCount(0);
+            
+            if(coche instanceof Gasolina)
+            {
+                this.ModeloTablaDetallesCocheProvision.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), ((Gasolina) coche).getdeposito_gasolina(), ""});  
+            }
+            else if(coche instanceof Electrico)
+            {
+                this.ModeloTablaDetallesCocheProvision.addRow(new Object[] {coche.getvin_coche(), coche.getmarca_coche(), coche.getmodelo_coche(), coche.getcolor_coche(), coche.getprecio_coche(), "", ((Electrico) coche).getbateria_electrico()});  
+            }
+            
+            this.ModeloTablaDetallesCocheProvision.fireTableDataChanged();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.");
+        }
+    }//GEN-LAST:event_detallesProveer
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

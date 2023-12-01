@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class BasededatosSQLite {
     
-    private final static String DB_URL = "jdbc:sqlite:/home/adrian/Escritorio/ConcesionarioBD/Concesionario";
+    private final static String DB_URL = "jdbc:sqlite:/home/adrian/Escritorio/ConcesionarioBD/ConcesionarioV2";
     private static Connection connection;
 
     public static String getDB_URL() {
@@ -58,10 +58,11 @@ public class BasededatosSQLite {
             try
             {
                 setConnection(DriverManager.getConnection(getDB_URL()));
+                JOptionPane.showMessageDialog(null, "Base de datos abierta correctamente");
             }
             catch (SQLException e)
             {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al abrir la base de datos: " + e.getMessage());
             }
         
         }
@@ -74,11 +75,12 @@ public class BasededatosSQLite {
                 if (getConnection() != null)
                 {
                     getConnection().close();
+                    JOptionPane.showMessageDialog(null, "Base de datos cerrada correctamente");
                 }
             } 
             catch (SQLException e) 
             {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al cerrar la base de datos: " + e.getMessage());
             }
 
         }
@@ -366,6 +368,41 @@ public class BasededatosSQLite {
                 // Confirmar la transacción
                 getConnection().commit();
                 JOptionPane.showMessageDialog(null, "Coche añadido correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
+        }
+        
+        public void aniadirCocheBD(String vin) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la inserción
+                String sentencia = "INSERT INTO Coche (vin) VALUES (?)";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, vin);
+
+                // Ejecutar la inserción
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
             } 
             catch (SQLException e) 
             {

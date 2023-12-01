@@ -49,6 +49,10 @@ public class Control {
     
     private BasededatosSQLite bd = new BasededatosSQLite();
 
+    public BasededatosSQLite getBd() {
+        return bd;
+    }
+
     
     
     public void aniadirCliente(String dni, String nombre, String direccion, String ciudad, String numero_telefono){
@@ -101,11 +105,85 @@ public class Control {
             if(cli.getdni_cliente().equalsIgnoreCase(dni))
             {         
                 cliente = vector_clientes.get(i);
+                return cliente;
             }
         i++;
         }
     
         return cliente;
+    }
+    
+    public Coche buscarCoche(String vin){
+    
+        Coche coche = new Coche("", "", "", 0, "");
+        ArrayList<Coche> vector_cochesElectricos = new ArrayList<>();
+        vector_cochesElectricos = bd.getElectrico();
+        ArrayList<Coche> vector_cochesGasolina = new ArrayList<>();
+        vector_cochesGasolina = bd.getGasolina();
+        int i = 0, j = 0;
+        
+        for(Coche co : vector_cochesElectricos){
+        
+            if(co.getvin_coche().equalsIgnoreCase(vin))
+            {         
+                coche = vector_cochesElectricos.get(i);
+            
+                return coche;
+            }
+        i++;
+        }
+        
+        for(Coche co : vector_cochesGasolina){
+        
+            if(co.getvin_coche().equalsIgnoreCase(vin))
+            {         
+                coche = vector_cochesGasolina.get(j);
+                return coche;
+            }
+        j++;
+        }
+    
+        return coche;
+    }
+    
+    public Proveedor buscarProveedor(String codigo){
+    
+        Proveedor proveedor = new Proveedor("", "");
+        ArrayList<Proveedor> vector_proveedores = new ArrayList<>();
+        vector_proveedores = bd.getProveedor();
+        int i = 0;
+        
+        for(Proveedor pro : vector_proveedores){
+        
+            if(pro.getcod_proveedor().equalsIgnoreCase(codigo))
+            {         
+                proveedor = vector_proveedores.get(i);
+                return proveedor;
+            }
+        i++;
+        }
+    
+        return proveedor;
+    }
+    
+    public Revisores buscarRevisor(String codigo){
+    
+        Revisores revisor = new Revisores("", "");
+        ArrayList<Revisores> vector_revisores = new ArrayList<>();
+        vector_revisores = bd.getRevisor();
+        int i = 0;
+        
+        for(Revisores rev : vector_revisores){
+        
+            if(rev.getcod_revisor_revisores().equalsIgnoreCase(codigo))
+            {         
+                revisor = vector_revisores.get(i);
+                return revisor;
+            }
+        i++;
+        }
+    
+        return revisor;
     }
     
     public ArrayList<Cliente> getClientes(){
@@ -119,12 +197,14 @@ public class Control {
     public void aniadirGasolina(String vin, String marca, String modelo, float precio, String color, int deposito){
     
         Gasolina gasolina = new Gasolina(deposito, vin, marca, modelo, precio, color);
+        bd.aniadirCocheBD(vin);
         bd.aniadirGasolinaBD(gasolina);
     }
     
     public void aniadirElectrico(String vin, String marca, String modelo, float precio, String color, double bateria){
     
         Electrico electrico = new Electrico(bateria, vin, marca, modelo, precio, color);
+        bd.aniadirCocheBD(vin);
         bd.aniadirElectricoBD(electrico);
     }
     
