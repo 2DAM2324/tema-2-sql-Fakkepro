@@ -1809,7 +1809,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null)
         {
-            if((this.id_provedor.getText().isEmpty() == false) && (this.nombre_provedor.getText().isEmpty() == false))
+            if((this.id_provedor.getText().isEmpty() == false) && (this.nombre_provedor.getText().isEmpty() == false) && (controlador.filtrarCodigoProveedor(this.id_provedor.getText())) && (controlador.filtrarNombre(this.nombre_provedor.getText())))
             {
                 if(controlador.comprobarProveedorExiste(this.id_provedor.getText()) == false)
                 {
@@ -1866,7 +1866,7 @@ public class Ventana1 extends javax.swing.JFrame {
         if(controlador != null && this.Tabla_Provedores.getSelectedRow() != -1)
         {
             String codAntiguo = this.ModeloTablaProveedores.getValueAt(this.Tabla_Provedores.getSelectedRow(), 0).toString();
-            if((this.id_provedor.getText().isEmpty() == false) && (this.nombre_provedor.getText().isEmpty() == false))
+            if((this.id_provedor.getText().isEmpty() == false) && (this.nombre_provedor.getText().isEmpty() == false) && (controlador.filtrarCodigoProveedor(this.id_provedor.getText())) && (controlador.filtrarNombre(this.nombre_provedor.getText())))
             {
                 if(codAntiguo.equals(this.id_provedor.getText()))
                 {
@@ -1886,7 +1886,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null)
         {
-            if((this.id_revisor.getText().isEmpty() == false) && (this.nombre_revisor.getText().isEmpty() == false))
+            if((this.id_revisor.getText().isEmpty() == false) && (this.nombre_revisor.getText().isEmpty() == false) && (controlador.filtrarCodigoRevisor(this.id_revisor.getText())) && (controlador.filtrarNombre(this.nombre_revisor.getText())))
             {
                 if(controlador.comprobarRevisorExiste(this.id_revisor.getText()) == false)
                 {
@@ -1941,7 +1941,7 @@ public class Ventana1 extends javax.swing.JFrame {
         {
             String codAntiguo = this.ModeloTablaRevisores.getValueAt(this.Tabla_Revisores.getSelectedRow(), 0).toString();
             
-            if((this.id_revisor.getText().isEmpty() == false) && (this.nombre_revisor.getText().isEmpty() == false))
+            if((this.id_revisor.getText().isEmpty() == false) && (this.nombre_revisor.getText().isEmpty() == false) && (controlador.filtrarCodigoRevisor(this.id_revisor.getText())) && (controlador.filtrarNombre(this.nombre_revisor.getText())))
             {
                 if(codAntiguo.equals(this.id_revisor.getText()))
                 {
@@ -2007,14 +2007,14 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null)
         {
-            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) && (this.bateria_coche.getText().isEmpty() == true))
+            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) && (this.bateria_coche.getText().isEmpty() == true) && (controlador.filtrarVin(this.vin_coche.getText())) && (controlador.filtrarDeposito(Integer.parseInt(this.deposito_coche.getText().toString()))) && (controlador.filtrarPrecio(Float.parseFloat(this.precio_coche.getText().toString()))))
             {
                 if(controlador.comprobarCocheExiste(this.vin_coche.getText()) == false)
                 {
                     controlador.aniadirGasolina(this.vin_coche.getText(), this.marca_coche.getText(), this.modelo_coche.getText(), Float.parseFloat(this.precio_coche.getText()), this.color_coche.getText(), Integer.parseInt(this.deposito_coche.getText()));
                     this.cargarCoches();
                 }
-            }else if ((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == true) && (this.bateria_coche.getText().isEmpty() == false))
+            }else if ((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == true) && (this.bateria_coche.getText().isEmpty() == false) && (controlador.filtrarVin(this.vin_coche.getText())) && (controlador.filtrarBateria(Double.parseDouble(this.bateria_coche.getText().toString()))) && (controlador.filtrarPrecio(Float.parseFloat(this.precio_coche.getText().toString()))))
             {
                 if(controlador.comprobarCocheExiste(this.vin_coche.getText()) == false)
                 {
@@ -2044,7 +2044,7 @@ public class Ventana1 extends javax.swing.JFrame {
         {
             int vinAntiguo = Integer.parseInt(this.ModeloTablaCoches.getValueAt(this.Tabla_Coches.getSelectedRow(), 0).toString());
             
-            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) && (this.bateria_coche.getText().isEmpty() == false))
+            if((this.vin_coche.getText().isEmpty() == false) && (this.marca_coche.getText().isEmpty() == false) && (this.modelo_coche.getText().isEmpty() == false) && (this.precio_coche.getText().isEmpty() == false) && (this.color_coche.getText().isEmpty() == false) && (this.deposito_coche.getText().isEmpty() == false) && (this.bateria_coche.getText().isEmpty() == false) && (controlador.filtrarVin(this.vin_coche.getText())) && (controlador.filtrarPrecio(Float.parseFloat(this.precio_coche.getText().toString()))))
             {
                 if(vinAntiguo == Integer.parseInt(this.vin_coche.getText()))
                 {
@@ -2074,7 +2074,7 @@ public class Ventana1 extends javax.swing.JFrame {
         if(controlador != null && this.Tabla_Clientes.getSelectedRow() != -1)
         {
             String dniAntiguo = this.ModeloTablaClientes.getValueAt(this.Tabla_Clientes.getSelectedRow(), 0).toString();
-            if((this.dni_cliente.getText().isEmpty() == false) && (this.nombre_cliente.getText().isEmpty() == false) && (this.direccion_cliente.getText().isEmpty() == false) && (this.ciudad_cliente.getText().isEmpty() == false) && (this.telefono_cliente.getText().isEmpty() == false))
+            if((this.dni_cliente.getText().isEmpty() == false) && (this.nombre_cliente.getText().isEmpty() == false) && (this.direccion_cliente.getText().isEmpty() == false) && (this.ciudad_cliente.getText().isEmpty() == false) && (this.telefono_cliente.getText().isEmpty() == false) && (controlador.filtrarDni(this.dni_cliente.getText())) && (controlador.filtrarNumeroTelefono(this.telefono_cliente.getText())) && (controlador.filtrarNombre(this.nombre_cliente.getText())))
             {
                 if(dniAntiguo.equals(this.dni_cliente.getText()))
                 {
@@ -2127,7 +2127,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null)
         {
-            if((this.dni_cliente.getText().isEmpty() == false) && (this.nombre_cliente.getText().isEmpty() == false) && (this.direccion_cliente.getText().isEmpty() == false) && (this.ciudad_cliente.getText().isEmpty() == false) && (this.telefono_cliente.getText().isEmpty() == false))
+            if((this.dni_cliente.getText().isEmpty() == false) && (this.nombre_cliente.getText().isEmpty() == false) && (this.direccion_cliente.getText().isEmpty() == false) && (this.ciudad_cliente.getText().isEmpty() == false) && (this.telefono_cliente.getText().isEmpty() == false) && (controlador.filtrarDni(this.dni_cliente.getText())) && (controlador.filtrarNumeroTelefono(this.telefono_cliente.getText())) && (controlador.filtrarNombre(this.nombre_cliente.getText())))
             {
                 if(controlador.comprobarClienteExiste(this.dni_cliente.getText()) == false)
                 {
@@ -2142,7 +2142,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         if(controlador != null)
         {
-            if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
+            if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false) && (controlador.filtrarMatricula(this.matricula_compra.getText())))
             {
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
                 if((controlador.comprobarCompraExiste(this.matricula_compra.getText(), fechaHoraActual) == false) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == false))
@@ -2197,7 +2197,7 @@ public class Ventana1 extends javax.swing.JFrame {
         if(controlador != null && this.Tabla_Compras.getSelectedRow() != -1)
         {
             String matricula = this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 2).toString();
-            if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false))
+            if((this.vin_compra.getText().isEmpty() == false) && (this.dni_compra.getText().isEmpty() == false) && (this.matricula_compra.getText().isEmpty() == false) && (controlador.filtrarMatricula(this.matricula_compra.getText())))
             {
                 if(((matricula.equals(this.matricula_compra.getText())) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (this.vin_compra.getText().equalsIgnoreCase(this.ModeloTablaCompras.getValueAt(this.Tabla_Compras.getSelectedRow(), 1).toString()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)) || ((matricula.equals(this.matricula_compra.getText()) == true) && (controlador.comprobarClienteExiste(this.dni_compra.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_compra.getText()) == true) && (controlador.comprobarCompraCocheCliente(this.matricula_compra.getText(), this.dni_compra.getText(), this.vin_compra.getText()) == true)))
                 {
@@ -2230,7 +2230,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         if(controlador != null)
         {
-            if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false))
+            if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false) && (controlador.filtrarCodigoRevision(this.codigo_revisar.getText())))
             {
                 if((controlador.comprobarRevisionExiste(this.codigo_revisar.getText()) == false) && (controlador.comprobarRevisorExiste(this.codigo_revisor_revisar.getText()) == true) && (controlador.comprobarCocheExiste(this.vin_revisar.getText()) == true) && (controlador.comprobarRevisionCocheRevisor(this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText()) == false))
                 {
@@ -2283,7 +2283,7 @@ public class Ventana1 extends javax.swing.JFrame {
         if(controlador != null && this.Tabla_Reviones.getSelectedRow() != -1)
         {
             String codigo_revision = this.ModeloTablaRevisiones.getValueAt(this.Tabla_Reviones.getSelectedRow(), 0).toString();
-            if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false))
+            if((this.codigo_revisar.getText().isEmpty() == false) && (this.vin_revisar.getText().isEmpty() == false) && (this.codigo_revisor_revisar.getText().isEmpty() == false) && (controlador.filtrarCodigoRevision(this.codigo_revisar.getText())))
             {
                 if((codigo_revision.equals(this.codigo_revisar.getText().toString()) == true)  && (controlador.comprobarRevisionCocheRevisor(this.codigo_revisar.getText().toString(), this.codigo_revisor_revisar.getText().toString(), this.vin_revisar.getText()) == false) && (controlador.comprobarRevisorExiste(this.codigo_revisor_revisar.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_revisar.getText()) == true))
                 {
@@ -2324,7 +2324,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         if(controlador != null && this.Tabla_Provisiones.getSelectedRow() != -1)
         {
-            if((this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false))
+            if((this.codigo_provision.getText().isEmpty() == false) && (this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false) && (controlador.filtrarCodigoProvision(this.codigo_provision.getText())))
             {
                 if((controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
                 {
@@ -2376,7 +2376,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         if(controlador != null)
         {
-            if((this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false) && (this.codigo_provision.getText().isEmpty() == false))
+            if((this.codigo_provision.getText().isEmpty() == false) && (this.codigo_proveedor_provision.getText().isEmpty() == false) && (this.vin_provision.getText().isEmpty() == false) && (this.codigo_provision.getText().isEmpty() == false) && (controlador.filtrarCodigoProvision(this.codigo_provision.getText())))
             {
                 if((controlador.comprobarProvisionExiste(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false) && (controlador.comprobarProveedorExiste(this.codigo_proveedor_provision.getText().toString()) == true) && (controlador.comprobarCocheExiste(this.vin_provision.getText()) == true) && (controlador.comprobarProvisionCocheProveedor(this.codigo_proveedor_provision.getText().toString(), this.vin_provision.getText()) == false))
                 {

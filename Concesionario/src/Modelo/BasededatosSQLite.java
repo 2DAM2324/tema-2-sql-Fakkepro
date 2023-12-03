@@ -44,7 +44,7 @@ public class BasededatosSQLite {
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al abrir la base de datos: " + e.getMessage());
             return;
         }
         
@@ -57,12 +57,13 @@ public class BasededatosSQLite {
         
             try
             {
-                setConnection(DriverManager.getConnection(getDB_URL()));
+                setConnection(DriverManager.getConnection(getDB_URL() + "?foreign_keys=true"));
                 JOptionPane.showMessageDialog(null, "Base de datos abierta correctamente");
             }
             catch (SQLException e)
             {
                 JOptionPane.showMessageDialog(null, "Error al abrir la base de datos: " + e.getMessage());
+                System.exit(0);
             }
         
         }
@@ -521,6 +522,42 @@ public class BasededatosSQLite {
 
         public void modificarElectricoBD(Electrico electrico) {
             modificarCocheBD("Electrico", electrico);
+        }
+        
+        public void borrarCocheBD(String vin) {
+            try 
+            {
+                getConnection().setAutoCommit(false);
+                // Preparar la sentencia SQL para la eliminación
+                String sentencia = "DELETE FROM Coche WHERE vin = ?";
+
+                // Utilizar PreparedStatement para evitar problemas de seguridad con consultas parametrizadas
+                PreparedStatement preparedStatement = getConnection().prepareStatement(sentencia);
+
+                // Establecer el valor del parámetro
+                preparedStatement.setString(1, vin);
+
+                // Ejecutar la eliminación
+                preparedStatement.executeUpdate();
+
+                // Confirmar la transacción
+                getConnection().commit();
+                JOptionPane.showMessageDialog(null, "Coche borrado correctamente.");
+            } 
+            catch (SQLException e) 
+            {
+                // Deshacer la transacción en caso de error
+                try 
+                {
+                    getConnection().rollback();
+                }
+                catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                }
+                
+                e.printStackTrace();
+            }
         }
         
         private void borrarCocheBD(String tipoCoche, String vin) {
